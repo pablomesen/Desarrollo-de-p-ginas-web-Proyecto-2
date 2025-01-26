@@ -2,13 +2,7 @@ import { Router } from 'express';
 import Movie from '../models/Movie';
 import * as movieController from '../controllers/movieControllers';
 
-
-
-
 const router = Router();
-
-
-
 
 // Route to get all movies
 router.get('/getMovies', async (req, res) => {
@@ -16,13 +10,27 @@ router.get('/getMovies', async (req, res) => {
     res.json(movies);
 });
 
-
-
-
 // Route to add a new movie
 router.post('/movies', async (req, res) => {
+    const { title,
+        description,
+        director,
+        cast,
+        genre,
+        calification,
+        releseDate,
+        images } = req.body;
     try {
-        const success = await movieController.addMovie(req.body);
+        const success = await movieController.addMovie({
+            title,
+            description,
+            director,
+            cast,
+            genre,
+            calification,
+            releseDate,
+            images
+        });
         if (success) {
             res.status(201).json({ message: 'Movie added successfully.' });
         } else {
@@ -33,16 +41,28 @@ router.post('/movies', async (req, res) => {
     }
 });
 
-
-
-
 // Route to edit a movie
 router.put('/movies/:id', async (req, res) => {
     const { id } = req.params;
-    const updateData = req.body;
-
+    const { title,
+        description,
+        director,
+        cast,
+        genre,
+        calification,
+        releseDate,
+        images } = req.body;
     try {
-        const success = await movieController.editMovie(id, updateData);
+        const success = await movieController.editMovie(id, {
+            title,
+            description,
+            director,
+            cast,
+            genre,
+            calification,
+            releseDate,
+            images
+        });
         if (success) {
             res.json({ message: 'Movie updated successfully.' });
         } else {
@@ -53,13 +73,9 @@ router.put('/movies/:id', async (req, res) => {
     }
 });
 
-
-
-
 // Route to delete a movie
 router.delete('/movies/:id', async (req, res) => {
     const { id } = req.params;
-
     try {
         const success = await movieController.deleteMovie(id);
         if (success) {
@@ -71,8 +87,5 @@ router.delete('/movies/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to delete movie.' });
     }
 });
-
-
-
 
 export default router;

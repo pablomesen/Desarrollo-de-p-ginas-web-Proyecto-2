@@ -7,6 +7,7 @@ export interface IActor extends Document {
     birthDate: Date;
     biography: string;
     movies: IMovie[];
+    images: string[];
 }
 
 export const ActorSchema: Schema = new Schema({
@@ -14,7 +15,8 @@ export const ActorSchema: Schema = new Schema({
     lastName: { type: String, required: true },
     birthDate: { type: Date, required: true },
     biography: { type: String, required: true },
-    movies: { type: [MovieSchema], required: true }
+    movies: { type: [MovieSchema], required: true },
+    images: { type: [String], required: true }
 });
 
 export default mongoose.model<IActor>('Actor', ActorSchema);

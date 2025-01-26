@@ -1,18 +1,18 @@
 import Movie, { IMovie } from "../models/Movie";
-import { IActor, ActorSchema } from '../models/Actor';
+import { IActor } from '../models/Actor';
 
 
 
 // Adds a new movie to the database
 export async function addMovie(movieData: {
-    title: string; 
-    description: string; 
-    director: string; 
-    cast: IActor[]; 
-    genre: string; 
-    calification: number; 
-    releseDate: Date; 
-    images: string[]; 
+    title: string;
+    description: string;
+    director: string;
+    cast: IActor[];
+    genre: string;
+    calification: number;
+    releseDate: Date;
+    images: string[];
 }): Promise<boolean> {
     // Check if a movie with the same title and release date already exists
     const movieAlreadyExists = await Movie.findOne({
@@ -34,28 +34,32 @@ export async function addMovie(movieData: {
 
 // Edits an existing movie in the database
 export async function editMovie(
-    movieId: string, 
-    updateData: Partial<{
-        title: string; 
-        description: string; 
-        director: string; 
-        cast: IMovie['cast']; 
-        genre: string; 
-        calification: number; 
-        releseDate: Date; 
-        images: string[]; 
+    movieId: string,
+    updatedData: Partial<{
+        title: string;
+        description: string;
+        director: string;
+        cast: IMovie['cast'];
+        genre: string;
+        calification: number;
+        releseDate: Date;
+        images: string[];
     }>
 ): Promise<boolean> {
     try {
         // Find the movie by ID
         const movie = await Movie.findById(movieId);
-        
+
         if (!movie) {
             return false; // Movie not found
         }
 
+        const filteredData = Object.fromEntries(
+            Object.entries(updatedData).filter(([key, value]) => value !== undefined)
+        );
+
         // Update the movie with the new data
-        Object.assign(movie, updateData);
+        Object.assign(movie, filteredData);
 
         // Save the updated movie back to the database
         await movie.save();
