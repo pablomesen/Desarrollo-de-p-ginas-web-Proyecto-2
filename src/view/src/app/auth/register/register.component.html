@@ -1,0 +1,141 @@
+<div class="min-h-screen bg-teal-custom flex items-center justify-center p-6">
+    <div class="max-w-5xl w-full bg-teal-custom/20 backdrop-blur-lg rounded-xl shadow-2xl overflow-hidden flex">
+      <!-- Form Section -->
+      <div class="w-full md:w-1/2 p-8">
+        <h2 class="text-2xl font-semibold text-white mb-8">Crear Cuenta</h2>
+   
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div>
+            <label for="fullName" class="block text-white text-sm mb-2">
+              Nombre Completo
+            </label>
+            <input
+              id="fullName"
+              type="text"
+              formControlName="fullName"
+              class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Tu nombre completo"
+            />
+            <div
+              *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.errors?.['required']"
+              class="text-red-300 text-sm mt-1"
+            >
+              Nombre completo es requerido
+            </div>
+          </div>
+   
+          <div>
+            <label for="email" class="block text-white text-sm mb-2">
+              Correo electrónico
+            </label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Tu correo electrónico"
+            />
+            <div
+              *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']"
+              class="text-red-300 text-sm mt-1"
+            >
+              Email es requerido
+            </div>
+            <div
+              *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']"
+              class="text-red-300 text-sm mt-1"
+            >
+              Formato de email inválido
+            </div>
+          </div>
+   
+          <div>
+            <label for="password" class="block text-white text-sm mb-2">
+              Contraseña
+            </label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Contraseña"
+            />
+            <div
+              *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']"
+              class="text-red-300 text-sm mt-1"
+            >
+              Contraseña es requerida
+            </div>
+            <div
+              *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']"
+              class="text-red-300 text-sm mt-1"
+            >
+              La contraseña debe tener al menos 8 caracteres
+            </div>
+            <div
+              *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['pattern']"
+              class="text-red-300 text-sm mt-1"
+            >
+              La contraseña debe contener letras, números y un carácter especial
+            </div>
+          </div>
+   
+          <div>
+            <label for="confirmPassword" class="block text-white text-sm mb-2">
+              Confirmar Contraseña
+            </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              formControlName="confirmPassword"
+              class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Confirmar contraseña"
+            />
+            <div
+              *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']"
+              class="text-red-300 text-sm mt-1"
+            >
+              Confirmación de contraseña es requerida
+            </div>
+            <div
+              *ngIf="registerForm.hasError('passwordMismatch')"
+              class="text-red-300 text-sm mt-1"
+            >
+              Las contraseñas no coinciden
+            </div>
+          </div>
+   
+          <button
+            type="submit"
+            [disabled]="registerForm.invalid"
+            class="w-full bg-teal-custom hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Registrarse
+          </button>
+        </form>
+   
+        <div class="mt-6 flex justify-center text-sm">
+          <a href="#" class="text-teal-custom hover:text-white transition duration-200">
+            ¿Ya tienes una cuenta? Iniciar Sesión
+          </a>
+        </div>
+      </div>
+   
+      <!-- Decorative Pattern Section -->
+      <div class="hidden md:block md:w-1/2 relative overflow-hidden">
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
+          <defs>
+            <pattern id="wave-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <path
+                d="M0 50 Q 25 0, 50 50 T 100 50"
+                fill="none"
+                stroke="rgba(255,255,255,0.2)"
+                stroke-width="2"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#wave-pattern)" />
+        </svg>
+      </div>
+    </div>
+  </div>
