@@ -22,6 +22,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
+    console.log(req)
     // Obtain data from request
     const { credential, password } = req.body;
     // Call business logic

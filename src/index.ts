@@ -4,10 +4,19 @@ import movieRoutes from './routes/movieRoutes';
 import actorRoutes from './routes/actorRoutes';
 import { connectDB } from './db';
 
+const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Configuración de CORS
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Conexión a la base de datos
 connectDB();
