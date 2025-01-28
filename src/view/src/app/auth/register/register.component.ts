@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,16 +13,19 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  registrationError: string = '';
+  registrationSuccess: string = '';
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.registerForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [
-        Validators.required, 
+        Validators.required,
         Validators.minLength(8),
         Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
       ]],
@@ -29,21 +33,40 @@ export class RegisterComponent {
     }, { validators: this.passwordMatchValidator });
   }
 
-  // Custom validator to check if passwords match
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-
-    return password && confirmPassword && password.value === confirmPassword.value 
-      ? null 
+    return password && confirmPassword && password.value === confirmPassword.value
+      ? null
       : { passwordMismatch: true };
   }
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      console.log('Form submitted:', this.registerForm.value);
-      // Add your registration logic here
-      // For example, call a registration service
+      const registrationData = {
+        userName: this.registerForm.get('fullName')?.value,
+        email: this.registerForm.get('email')?.value,
+        password: this.registerForm.get('password')?.value,
+        role: 'user' // Default role
+      };
+
+      this.authService.register(registrationData).subscribe({
+        next: (response) => {
+          if (response.opCode === 0) {
+            console.log('Registro exitoso');
+            this.registrationSuccess = '¡Registro exitoso! Redirigiendo al inicio de sesión...';
+            setTimeout(() => {
+              this.router.navigate(['/auth/login']);
+            }, 3000); // Redirige después de 3 segundos
+          } else {
+            this.registrationError = response.msg || 'Error en el registro';
+          }
+        },
+        error: (error) => {
+          console.error('Error de registro:', error);
+          this.registrationError = 'Ocurrió un error durante el registro';
+        }
+      });
     }
   }
 }
