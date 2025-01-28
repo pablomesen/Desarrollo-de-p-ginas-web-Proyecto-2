@@ -1,0 +1,59 @@
+<nav class="bg-teal-custom shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo/Brand -->
+        <div class="flex items-center">
+          <span class="text-white text-xl font-bold">
+            Movie Catalog
+          </span>
+        </div>
+  
+        <!-- Navigation Links -->
+        <div class="flex items-center space-x-4">
+          <!-- Show these links only when logged in -->
+          <ng-container *ngIf="isLoggedIn && !isLoginOrRegister">
+            <a routerLink="/catalog"
+               routerLinkActive="bg-teal-600"
+               class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">
+              Movies
+            </a>
+            <a routerLink="/movie-cast"
+               routerLinkActive="bg-teal-600"
+               class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">
+              Movie Cast
+            </a>
+            <a routerLink="/actors"
+               routerLinkActive="bg-teal-600"
+               class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">
+              Actors
+            </a>
+  
+            <!-- Logout Button with Icon -->
+            <button (click)="logout()" 
+                    class="flex items-center text-white px-4 py-2 rounded-md text-sm font-medium bg-gray-500 hover:bg-gray-600 active:bg-gray-700 focus:outline-none transition-colors">
+              <span class="mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-6V9m0 0v1m0-6V3" />
+                </svg>
+              </span>
+              Logout
+            </button>
+          </ng-container>
+  
+          <!-- Show these links when not logged in -->
+          <ng-container *ngIf="!isLoggedIn">
+            <a routerLink="/login" 
+               routerLinkActive="bg-teal-600"
+               class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">
+              Login
+            </a>
+            <a routerLink="/register" 
+               routerLinkActive="bg-teal-600"
+               class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">
+              Register
+            </a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </nav>
