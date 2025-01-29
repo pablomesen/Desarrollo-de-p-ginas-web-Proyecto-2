@@ -1,36 +1,28 @@
 import Movie, { IMovie } from "../models/Movie";
-import { IActor } from '../models/Actor';
-
-
 
 // Adds a new movie to the database
 export async function addMovie(movieData: {
     title: string;
     description: string;
     director: string;
-    cast: IActor[];
-    genre: string;
+    cast: String[];
+    genres: String[];
     calification: number;
-    releseDate: Date;
+    releaseDate: String;
     images: string[];
 }): Promise<boolean> {
-    // Check if a movie with the same title and release date already exists
     const movieAlreadyExists = await Movie.findOne({
         title: movieData.title,
-        releseDate: movieData.releseDate
+        releseDate: movieData.releaseDate
     });
     if (movieAlreadyExists) {
-        return false; // Movie already exists
+        return false;
     } else {
-        // Create a new movie instance
         const newMovie = new Movie(movieData);
-        await newMovie.save(); // Save the movie to the database
-        return true; // Movie successfully registered
+        await newMovie.save();
+        return true; 
     }
 }
-
-
-
 
 // Edits an existing movie in the database
 export async function editMovie(
@@ -39,52 +31,38 @@ export async function editMovie(
         title: string;
         description: string;
         director: string;
-        cast: IMovie['cast'];
-        genre: string;
+        cast: String[];
+        genres: String[];
         calification: number;
-        releseDate: Date;
+        releaseDate: String;
         images: string[];
     }>
 ): Promise<boolean> {
     try {
-        // Find the movie by ID
         const movie = await Movie.findById(movieId);
-
         if (!movie) {
-            return false; // Movie not found
+            return false; 
         }
-
         const filteredData = Object.fromEntries(
             Object.entries(updatedData).filter(([key, value]) => value !== undefined)
         );
-
-        // Update the movie with the new data
         Object.assign(movie, filteredData);
-
-        // Save the updated movie back to the database
         await movie.save();
-        return true; // Movie successfully updated
+        return true;
     } catch (error) {
         console.error('Error editing movie:', error);
         throw new Error('Failed to edit movie.');
     }
 }
 
-
-
-
 // Deletes a movie from the database
 export async function deleteMovie(movieId: string): Promise<boolean> {
     try {
-        // Find and delete the movie by ID
         const result = await Movie.findByIdAndDelete(movieId);
-
-        // Check if a movie was deleted
         if (!result) {
-            return false; // Movie not found
+            return false;
         }
-
-        return true; // Movie successfully deleted
+        return true;
     } catch (error) {
         console.error('Error deleting movie:', error);
         throw new Error('Failed to delete movie.');

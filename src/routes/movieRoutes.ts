@@ -17,18 +17,18 @@ router.post('/movies', async (req, res) => {
             description,
             director,
             cast,
-            genre,
+            genres,
             calification,
-            releseDate,
+            releaseDate,
             images } = req.body;
         const success = await movieController.addMovie({
             title,
             description,
             director,
             cast,
-            genre,
+            genres,
             calification,
-            releseDate,
+            releaseDate,
             images
         });
         success ? 
@@ -47,18 +47,18 @@ router.put('/movies/:id', async (req, res) => {
             description,
             director,
             cast,
-            genre,
+            genres,
             calification,
-            releseDate,
+            releaseDate,
             images } = req.body;
         const success = await movieController.editMovie(id, {
             title,
             description,
             director,
             cast,
-            genre,
+            genres,
             calification,
-            releseDate,
+            releaseDate,
             images
         });
         success ? 

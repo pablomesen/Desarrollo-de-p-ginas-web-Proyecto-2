@@ -1,42 +1,4 @@
-import express, { Request, Response } from 'express';
-import movieRoutes from './routes/movieRoutes';
-import actorRoutes from './routes/actorRoutes';
-import userRoutes from './routes/userRoutes';
-import { connectDB } from './db';
-
-const cors = require('cors');
-const app = express();
-const PORT = 3000;
-
-app.use(express.json());
-
-// Configuración de CORS
-app.use(cors({
-    origin: 'http://localhost:4200',
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Conexión a la base de datos
-connectDB();
-
-// Routes inclusion
-app.use('/api', userRoutes);
-app.use('/api', movieRoutes);
-app.use('/api', actorRoutes);
-
-// API root directory
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World');
-});
-
-// Server start
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-const moviesData = [
+[
     {
       "title": "The Shawshank Redemption",
       "description": "A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion.",
@@ -623,199 +585,199 @@ const moviesData = [
       ]
     },
     {
-      title: "Spirited Away",
-      description: "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches and spirits, and where humans are changed into beasts.",
-      director: "Hayao Miyazaki",
-      cast: [
+      "title": "Spirited Away",
+      "description": "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches and spirits, and where humans are changed into beasts.",
+      "director": "Hayao Miyazaki",
+      "cast": [
         "Rumi Hiiragi",
         "Miyu Irino",
         "Mari Natsuki"
       ],
-      genres: [
+      "genres": [
         "Adventure",
         "Animation",
         "Family"
       ],
-      calification: 8.6,
-      releaseDate: "2003-03-28",
-      images: [
+      "calification": 8.6,
+      "releaseDate": "2003-03-28",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BNTEyNmEwOWUtYzkyOC00ZTQ4LTllZmUtMjk0Y2YwOGUzYjRiXkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "The Pianist",
-      description: "During WWII, acclaimed Polish musician Wladyslaw faces various struggles as he loses contact with his family. As the situation worsens, he hides in the ruins of Warsaw in order to survive.",
-      director: "Roman Polanski",
-      cast: [
+      "title": "The Pianist",
+      "description": "During WWII, acclaimed Polish musician Wladyslaw faces various struggles as he loses contact with his family. As the situation worsens, he hides in the ruins of Warsaw in order to survive.",
+      "director": "Roman Polanski",
+      "cast": [
         "Adrien Brody",
         "Thomas Kretschmann",
         "Frank Finlay"
       ],
-      genres: [
+      "genres": [
         "Biography",
         "Drama",
         "Music"
       ],
-      calification: 8.5,
-      releaseDate: "2003-03-28",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "2003-03-28",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BMjEwNmEwYjgtNTk3ZC00NjljLTg5ZDctZTY3ZGQwZjRkZmQxXkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "Gladiator",
-      description: "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.",
-      director: "Ridley Scott",
-      cast: [
+      "title": "Gladiator",
+      "description": "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.",
+      "director": "Ridley Scott",
+      "cast": [
         "Russell Crowe",
         "Joaquin Phoenix",
         "Connie Nielsen"
       ],
-      genres: [
+      "genres": [
         "Action",
         "Adventure",
         "Drama"
       ],
-      calification: 8.5,
-      releaseDate: "2000-05-05",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "2000-05-05",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BYWQ4YmNjYjEtOWE1Zi00Y2U4LWI4NTAtMTU0MjkxNWQ1ZmJiXkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "Parasite",
-      description: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
-      director: "Bong Joon Ho",
-      cast: [
+      "title": "Parasite",
+      "description": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+      "director": "Bong Joon Ho",
+      "cast": [
         "Song Kang-ho",
         "Lee Sun-kyun",
         "Cho Yeo-jeong"
       ],
-      genres: [
+      "genres": [
         "Drama",
         "Thriller"
       ],
-      calification: 8.5,
-      releaseDate: "2019-11-08",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "2019-11-08",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BYjk1Y2U4MjQtY2ZiNS00OWQyLWI3MmYtZWUwNmRjYWRiNWNhXkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "Psycho",
-      description: "A secretary on the run for embezzlement takes refuge at a secluded California motel owned by a repressed man and his overbearing mother.",
-      director: "Alfred Hitchcock",
-      cast: [
+      "title": "Psycho",
+      "description": "A secretary on the run for embezzlement takes refuge at a secluded California motel owned by a repressed man and his overbearing mother.",
+      "director": "Alfred Hitchcock",
+      "cast": [
         "Anthony Perkins",
         "Janet Leigh",
         "Vera Miles"
       ],
-      genres: [
+      "genres": [
         "Horror",
         "Mystery",
         "Thriller"
       ],
-      calification: 8.5,
-      releaseDate: "1960-09-08",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "1960-09-08",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BYjZhMzFiZjItODA3ZC00MmRhLWIzMGYtMmVjOWUwYTA3MTRjXkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "The Lion King",
-      description: "Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.",
-      director: "Roger Allers, Rob Minkoff",
-      cast: [
+      "title": "The Lion King",
+      "description": "Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.",
+      "director": "Roger Allers, Rob Minkoff",
+      "cast": [
         "Matthew Broderick",
         "Jeremy Irons",
         "James Earl Jones"
       ],
-      genres: [
+      "genres": [
         "Adventure",
         "Animation",
         "Drama"
       ],
-      calification: 8.5,
-      releaseDate: "1994-06-24",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "1994-06-24",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BZGRiZDZhZjItM2M3ZC00Y2IyLTk3Y2MtMWY5YjliNDFkZTJlXkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "Grave of the Fireflies",
-      description: "A young boy and his little sister struggle to survive in Japan during World War II.",
-      director: "Isao Takahata",
-      cast: [
+      "title": "Grave of the Fireflies",
+      "description": "A young boy and his little sister struggle to survive in Japan during World War II.",
+      "director": "Isao Takahata",
+      "cast": [
         "Tsutomu Tatsumi",
         "Ayano Shiraishi",
         "Akemi Yamaguchi"
       ],
-      genres: [
+      "genres": [
         "Animation",
         "Drama",
         "War"
       ],
-      calification: 8.5,
-      releaseDate: "1989-07-26",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "1989-07-26",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BNTY5MmE2OGMtN2IxNC00MDY4LTkwMGEtZDUzOTYyNWE0ZTNjXkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "The Departed",
-      description: "An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.",
-      director: "Martin Scorsese",
-      cast: [
+      "title": "The Departed",
+      "description": "An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.",
+      "director": "Martin Scorsese",
+      "cast": [
         "Leonardo DiCaprio",
         "Matt Damon",
         "Jack Nicholson"
       ],
-      genres: [
+      "genres": [
         "Crime",
         "Drama",
         "Thriller"
       ],
-      calification: 8.5,
-      releaseDate: "2006-10-06",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "2006-10-06",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BMTI1MTY2OTIxNV5BMl5BanBnXkFtZTYwNjQ4NjY3._V1_.jpg"
       ]
     },
     {
-      title: "Whiplash",
-      description: "A promising young drummer enrolls at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
-      director: "Damien Chazelle",
-      cast: [
+      "title": "Whiplash",
+      "description": "A promising young drummer enrolls at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
+      "director": "Damien Chazelle",
+      "cast": [
         "Miles Teller",
         "J.K. Simmons",
         "Paul Reiser"
       ],
-      genres: [
+      "genres": [
         "Drama",
         "Music"
       ],
-      calification: 8.5,
-      releaseDate: "2014-10-15",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "2014-10-15",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BMmNkODhkYjctMDMyOC00ZTNjLTkwZTItM2ExMTAxMGU1ZGQ1XkEyXkFqcGc@._V1_.jpg"
       ]
     },
     {
-      title: "American History X",
-      description: "Living a life marked by violence, neo-Nazi Derek finally goes to prison after killing two black youths. Upon his release, Derek vows to change; he hopes to prevent his brother, Danny, who idolizes Derek, from following in his footsteps.",
-      director: "Tony Kaye",
-      cast: [
+      "title": "American History X",
+      "description": "Living a life marked by violence, neo-Nazi Derek finally goes to prison after killing two black youths. Upon his release, Derek vows to change; he hopes to prevent his brother, Danny, who idolizes Derek, from following in his footsteps.",
+      "director": "Tony Kaye",
+      "cast": [
         "Edward Norton",
         "Edward Furlong",
         "Beverly D'Angelo"
       ],
-      genres: [
+      "genres": [
         "Crime",
         "Drama"
       ],
-      calification: 8.5,
-      releaseDate: "1998-11-20",
-      images: [
+      "calification": 8.5,
+      "releaseDate": "1998-11-20",
+      "images": [
         "https://m.media-amazon.com/images/M/MV5BMzhiOTQ0NDItOTg0Zi00OGVmLWE0OGEtMTI4NDM0NWMxZWU4XkEyXkFqcGc@._V1_.jpg"
       ]
     },
