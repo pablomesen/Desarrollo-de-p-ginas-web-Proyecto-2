@@ -1,186 +1,170 @@
-// catalog.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { SearchAreaComponent } from './search-area/search-area.component';
-import { HttpClient } from '@angular/common/http';
-
-interface Movie {
-  title: string;
-  imageUrl: string;
-}
+import { FilterComponent } from '../filter/filter.component';
+import { IMovie } from '../../../../models/Movie';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
   imports: [
-    CommonModule, 
-    MovieCardComponent, 
-    SearchAreaComponent
+    CommonModule,
+    MovieCardComponent,
+    SearchAreaComponent,
+    FilterComponent
   ],
   template: `
     <div class="container mx-auto p-4">
-      <app-search-area (searchMovies)="onSearchMovies($event)"></app-search-area>
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
-        <app-movie-card 
-          *ngFor="let movie of paginatedMovies" 
-          [movie]="movie"
-        ></app-movie-card>
-      </div>
-      <div class="flex justify-center mt-6">
-        <button 
-          *ngIf="currentPage > 1" 
-          (click)="previousPage()"
-          class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
-        >
-          Previous
-        </button>
-        <span class="mx-4">Page {{ currentPage }} of {{ totalPages }}</span>
-        <button 
-          *ngIf="currentPage < totalPages" 
-          (click)="nextPage()"
-          class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
-        >
-          Next
-        </button>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Filters Sidebar -->
+        <div class="md:col-span-1">
+          <app-filter (filterChange)="onFilterChange($event)"></app-filter>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="md:col-span-3">
+          <app-search-area (searchMovies)="onSearchMovies($event)"></app-search-area>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <app-movie-card
+              *ngFor="let movie of paginatedMovies"
+              [movie]="movie"
+            ></app-movie-card>
+          </div>
+
+          <div class="flex justify-center mt-6">
+            <button
+              *ngIf="currentPage > 1"
+              (click)="previousPage()"
+              class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+            >
+              Anterior
+            </button>
+            <span class="mx-4">Página {{ currentPage }} de {{ totalPages }}</span>
+            <button
+              *ngIf="currentPage < totalPages"
+              (click)="nextPage()"
+              class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   `
 })
 export class CatalogComponent implements OnInit {
-  movies: Movie[] = [
-    {
-      "title": "The Shawshank Redemption",
-      "imageUrl": "https://m.media-amazon.com/images/I/51NiGlapXlL._AC_SY679_.jpg"
-    },
-    {
-      "title": "The Godfather",
-      "imageUrl": "https://m.media-amazon.com/images/I/41+eK8zBwQL._AC_.jpg"
-    },
-    {
-      "title": "The Dark Knight",
-      "imageUrl": "https://m.media-amazon.com/images/I/51k0qaHDxrL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Pulp Fiction",
-      "imageUrl": "https://m.media-amazon.com/images/I/71c05lTE03L._AC_SY679_.jpg"
-    },
-    {
-      "title": "Forrest Gump",
-      "imageUrl": "https://m.media-amazon.com/images/I/61Y9RfdZX7L._AC_SY679_.jpg"
-    },
-    {
-      "title": "Inception",
-      "imageUrl": "https://m.media-amazon.com/images/I/91kFYg4fX3L._AC_SY679_.jpg"
-    },
-    {
-      "title": "Fight Club",
-      "imageUrl": "https://m.media-amazon.com/images/I/81D+KJkO7-L._AC_SY679_.jpg"
-    },
-    {
-      "title": "The Matrix",
-      "imageUrl": "https://m.media-amazon.com/images/I/51EG732BV3L._AC_.jpg"
-    },
-    {
-      "title": "The Lord of the Rings: The Fellowship of the Ring",
-      "imageUrl": "https://m.media-amazon.com/images/I/51Qvs9i5a%2BL._AC_SY679_.jpg"
-    },
-    {
-      "title": "The Lion King",
-      "imageUrl": "https://m.media-amazon.com/images/I/71dDQKMWMSL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Interstellar",
-      "imageUrl": "https://m.media-amazon.com/images/I/81mTWneAwBL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Gladiator",
-      "imageUrl": "https://m.media-amazon.com/images/I/61+jlcHkLmL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Saving Private Ryan",
-      "imageUrl": "https://m.media-amazon.com/images/I/51mfD3VzxIL._AC_SY679_.jpg"
-    },
-    {
-      "title": "The Green Mile",
-      "imageUrl": "https://m.media-amazon.com/images/I/51snSMqRBFL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Schindler's List",
-      "imageUrl": "https://m.media-amazon.com/images/I/51AfIvd4fhL._AC_.jpg"
-    },
-    {
-      "title": "Braveheart",
-      "imageUrl": "https://m.media-amazon.com/images/I/51NTtBGieBL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Avengers: Endgame",
-      "imageUrl": "https://m.media-amazon.com/images/I/81ExhpBEbHL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Titanic",
-      "imageUrl": "https://m.media-amazon.com/images/I/71rNJQ2g-EL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Jurassic Park",
-      "imageUrl": "https://m.media-amazon.com/images/I/81xTXuRzy8L._AC_SY679_.jpg"
-    },
-    {
-      "title": "Star Wars: Episode IV - A New Hope",
-      "imageUrl": "https://m.media-amazon.com/images/I/71ikfZZT9bL._AC_SY679_.jpg"
-    },
-    {
-      "title": "The Empire Strikes Back",
-      "imageUrl": "https://m.media-amazon.com/images/I/81MXA1xjF9L._AC_SY679_.jpg"
-    },
-    {
-      "title": "Return of the Jedi",
-      "imageUrl": "https://m.media-amazon.com/images/I/81Kndw8JBvL._AC_SY679_.jpg"
-    },
-    {
-      "title": "The Avengers",
-      "imageUrl": "https://m.media-amazon.com/images/I/91pYkYPnKLL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Black Panther",
-      "imageUrl": "https://m.media-amazon.com/images/I/91krzNd6nGL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Spider-Man: No Way Home",
-      "imageUrl": "https://m.media-amazon.com/images/I/81QpGzg9f4L._AC_SY679_.jpg"
-    },
-    {
-      "title": "Coco",
-      "imageUrl": "https://m.media-amazon.com/images/I/71QKGmjslXL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Up",
-      "imageUrl": "https://m.media-amazon.com/images/I/81zZhdX9bOL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Toy Story",
-      "imageUrl": "https://m.media-amazon.com/images/I/91DBniIGTPL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Frozen",
-      "imageUrl": "https://m.media-amazon.com/images/I/81cMO-OrrKL._AC_SY679_.jpg"
-    },
-    {
-      "title": "Finding Nemo",
-      "imageUrl": "https://m.media-amazon.com/images/I/81lRzYZjlLL._AC_SY679_.jpg"
-    }
-  ];
-  
-  filteredMovies: Movie[] = [];
+  movies: IMovie[] = [];
+  filteredMovies: IMovie[] = [];
   currentPage = 1;
   moviesPerPage = 12;
+  searchQuery = '';
+  activeFilters: any = {};
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.filteredMovies = this.movies;
+    this.getMovies();
   }
 
-  get paginatedMovies(): Movie[] {
+  getMovies() {
+    this.http.get<IMovie[]>('http://localhost:3000/api/getMovies').subscribe(
+      (data) => {
+        this.movies = data;
+        this.applyFiltersAndSearch();
+      },
+      (error) => {
+        console.error('Error fetching movies:', error);
+      }
+    );
+  }
+
+  onFilterChange(filters: any) {
+    this.activeFilters = filters;
+    this.applyFiltersAndSearch();
+  }
+
+  onSearchMovies(query: string) {
+    this.searchQuery = query;
+    this.applyFiltersAndSearch();
+  }
+
+  applyFiltersAndSearch() {
+    let results = [...this.movies];
+
+    // Apply search
+    if (this.searchQuery) {
+      results = results.filter(movie =>
+        movie.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        movie.description.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+
+    // Apply filters
+    if (this.activeFilters.genre) {
+      results = results.filter(movie => 
+        movie.genres.includes(this.activeFilters.genre)
+      );
+    }
+
+    if (this.activeFilters.cast) {
+      results = results.filter(movie => 
+        movie.cast.some(actor => 
+          actor.toLowerCase().includes(this.activeFilters.cast.toLowerCase())
+        )
+      );
+    }
+
+    if (this.activeFilters.director) {
+      results = results.filter(movie => 
+        movie.director.toLowerCase().includes(this.activeFilters.director.toLowerCase())
+      );
+    }
+
+    if (this.activeFilters.dateFrom) {
+      results = results.filter(movie => 
+        new Date(movie.releaseDate) >= this.activeFilters.dateFrom
+      );
+    }
+
+    if (this.activeFilters.dateTo) {
+      results = results.filter(movie => 
+        new Date(movie.releaseDate) <= this.activeFilters.dateTo
+      );
+    }
+
+    if (this.activeFilters.minCalification) {
+      results = results.filter(movie => 
+        movie.calification >= this.activeFilters.minCalification
+      );
+    }
+
+    // Apply sorting
+    if (this.activeFilters.sortBy) {
+      results.sort((a, b) => {
+        switch (this.activeFilters.sortBy) {
+          case 'title':
+            return a.title.localeCompare(b.title);
+          case 'releaseDate':
+            return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
+          case 'calification':
+            return b.calification - a.calification;
+          case 'director':
+            return a.director.localeCompare(b.director);
+          default:
+            return 0;
+        }
+      });
+    }
+
+    this.filteredMovies = results;
+    this.currentPage = 1;
+  }
+
+  get paginatedMovies(): IMovie[] {
     const startIndex = (this.currentPage - 1) * this.moviesPerPage;
     return this.filteredMovies.slice(startIndex, startIndex + this.moviesPerPage);
   }
@@ -199,12 +183,5 @@ export class CatalogComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
-  }
-
-  onSearchMovies(query: string) {
-    this.filteredMovies = this.movies.filter(movie => 
-      movie.title.toLowerCase().includes(query.toLowerCase())
-    );
-    this.currentPage = 1;
   }
 }
