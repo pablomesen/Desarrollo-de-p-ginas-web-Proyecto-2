@@ -1,0 +1,33 @@
+<div class="container mx-auto p-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Main Content -->
+      <div class="md:col-span-4">
+        <app-search-area (searchMovies)="onSearchActors($event)"></app-search-area>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div *ngFor="let actor of paginatedActors" class="relative group">
+            <app-actor-card [actor]="actor"></app-actor-card>
+          </div>
+        </div>
+  
+        <!-- Paginación -->
+        <div class="flex justify-center mt-6">
+          <button
+            *ngIf="currentPage > 1"
+            (click)="previousPage()"
+            class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+          >
+            Anterior
+          </button>
+          <span class="mx-4">Página {{ currentPage }} de {{ totalPages }}</span>
+          <button
+            *ngIf="currentPage < totalPages"
+            (click)="nextPage()"
+            class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,1 +1,53 @@
-<p>catalog works!</p>
+<div class="container mx-auto p-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Filters Sidebar -->
+      <div class="md:col-span-1">
+        <app-filter (filterChange)="onFilterChange($event)"></app-filter>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="md:col-span-3">
+        <app-search-area (searchMovies)="onSearchMovies($event)"></app-search-area>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div 
+            *ngFor="let movie of paginatedMovies" 
+            class="relative group"
+          >
+            <app-movie-card [movie]="movie"></app-movie-card>
+            <!-- Botón de eliminar -->
+            <button 
+              (click)="deleteMovie(movie)"
+              class="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-600"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"></path>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+  
+        <!-- Paginación -->
+        <div class="flex justify-center mt-6">
+          <button
+            *ngIf="currentPage > 1"
+            (click)="previousPage()"
+            class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+          >
+            Anterior
+          </button>
+          <span class="mx-4">Página {{ currentPage }} de {{ totalPages }}</span>
+          <button
+            *ngIf="currentPage < totalPages"
+            (click)="nextPage()"
+            class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

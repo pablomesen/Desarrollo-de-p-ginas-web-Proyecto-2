@@ -5,14 +5,7 @@ import { MovieCardComponent } from '../movie-card/movie-card.component';
   selector: 'app-movie-list',
   standalone: true,
   imports: [MovieCardComponent],
-  template: `
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <app-movie-card 
-        *ngFor="let movie of movies" 
-        [movie]="movie"
-      ></app-movie-card>
-    </div>
-  `
+  templateUrl: './movie-list.component.html'
 })
 export class MovieListComponent {
   @Input() movies: any[] = [];
