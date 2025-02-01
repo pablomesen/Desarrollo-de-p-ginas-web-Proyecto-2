@@ -11,10 +11,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, startWith, switchMap } from 'rxjs';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+//import { IActor } from '../../../../models/Actor';
+import { IMovie } from '../../../../../models/Movie';
+import { MovieService } from '../../services/movie.service';
+import { ActorService } from '../../services/actor.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 
 
@@ -39,6 +46,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./movie-form.component.scss']
 })
 export class MovieFormComponent {
+
+  public formMode: 'add' | 'edit' = 'add';
   movieForm: FormGroup;
   castInput = new FormControl('');
   genreInput = new FormControl('');
@@ -56,9 +65,13 @@ export class MovieFormComponent {
   filteredActors: Observable<string[]>;
   filteredGenres: Observable<string[]>;
 
-  constructor(
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
+  constructor( 
+    private fb: FormBuilder, 
+    private snackBar: MatSnackBar,
+    private movieService: MovieService,
+    private actorService: ActorService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router   
   ) {
     
     this.movieForm = this.fb.group({
@@ -83,6 +96,14 @@ export class MovieFormComponent {
     );
   }
 
+
+  get currentMovie(): IMovie {
+    const movie = this.movieForm.value as IMovie;
+    return movie;
+  }
+
+
+
   private _filterActors(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.allActors.filter(actor => 
@@ -96,7 +117,7 @@ export class MovieFormComponent {
       genre.toLowerCase().includes(filterValue)
     );
   }
-
+  
   // Form array getters
   get cast() {
     return this.movieForm.get('cast') as FormArray;
@@ -201,6 +222,34 @@ export class MovieFormComponent {
 
   removeImage(index: number) {
     this.images.removeAt(index);
+  }
+
+  ngOnInit(): void {
+    // If the form is used to add a new movie, the form should be initialized here
+    if (this.router.url.includes('new-movie')) {
+      console.log('New movie form');
+      return;
+    }
+
+    console.log('Edit movie form');
+    // If the form is used to edit a movie, the movie data should be loaded here
+    this.formMode = 'edit';
+
+    this.activatedRoute.params
+      .pipe(
+        switchMap( ({ id }) => this.movieService.getMovieById(id) )
+      ). subscribe( movie => {
+          if (!movie) {
+            console.error('Movie not found');
+            return this.router.navigateByUrl('/new-movie');
+          }
+
+          this.movieForm.reset(movie);
+          return;
+        }
+      )
+    ;
+    
   }
 
   onSubmit() {

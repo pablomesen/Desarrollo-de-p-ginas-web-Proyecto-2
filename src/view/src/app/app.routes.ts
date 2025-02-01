@@ -12,7 +12,8 @@ export const routes: Routes = [
   { path: 'catalog', component: CatalogComponent },
   { path: 'actors', component: ActorCatalogComponent }, 
   { path: 'actors/:id', component: ActorDetailComponent }, 
-  { path: 'movies/edit/:id', component: MovieFormComponent },
+  {path: 'new-movie', component: MovieFormComponent},
+  {path: 'edit-movie/:id', component: MovieFormComponent},
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },
 ];

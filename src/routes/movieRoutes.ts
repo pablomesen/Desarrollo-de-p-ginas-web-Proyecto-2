@@ -10,6 +10,21 @@ router.get('/getMovies', async (req, res) => {
     res.json(movies);
 });
 
+// Route to get a movie by ID
+router.get('/movies/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const movie = await movieController.getMovieById(id);
+        if (movie) {
+            res.status(200).json(movie);
+        } else {
+            res.status(404).json({ error: 'Movie not found.' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch movie.' });
+    }
+});
+
 // Route to add a new movie
 router.post('/movies', async (req, res) => {
     try {
