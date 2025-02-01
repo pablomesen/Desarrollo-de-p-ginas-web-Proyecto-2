@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IActor } from '../../../../../models/Actor';
 import { ActorService } from '../../services/actor.service';
+import { NgIf, NgFor } from '@angular/common'; // Directivas comunes
+import { RouterLink } from '@angular/router';  // Directiva para enrutamiento
 
 @Component({
   selector: 'app-actor-card',
