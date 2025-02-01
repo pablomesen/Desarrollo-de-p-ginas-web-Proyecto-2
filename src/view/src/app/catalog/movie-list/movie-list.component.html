@@ -1,8 +1,6 @@
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-  <app-movie-card 
-    *ngFor="let movie of movies" 
-    [movie]="movie" 
-    [isAdmin]="true"
-    (onEdit)="editMovie($event)"  
-  ></app-movie-card>
-</div>
+<app-movie-card
+  *ngFor="let movie of movies"
+  [movie]="movie"
+  (onEdit)="editMovie($event)"
+>
+</app-movie-card>

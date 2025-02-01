@@ -14,8 +14,12 @@ export class MovieListComponent {
   constructor(private router: Router) {}
 
   editMovie(movie: any) {
-    // Redirige al formulario de edición usando el _id de MongoDB
-    console.log("Xd")
-    this.router.navigate(['/movies/edit', movie._id]);
+    console.log('Evento recibido en MovieListComponent:', movie);
+    if (movie && movie._id) {
+      this.router.navigate(['/movies/edit', movie._id]);
+    } else {
+      console.error('Error: Movie ID is missing');
+    }
   }
+  
 }

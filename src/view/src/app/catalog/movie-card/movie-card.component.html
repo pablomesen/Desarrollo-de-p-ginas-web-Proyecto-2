@@ -50,9 +50,8 @@
 
       <!-- Botón Editar -->
       <button 
-        *ngIf="isAdmin"
         class="text-blue-500 hover:text-blue-700 transition-all font-medium"
-        (click)="onEdit.emit(movie)"
+        (click)="editMovie()"
       >
         Editar
       </button>
@@ -60,7 +59,7 @@
       <!-- Botón Eliminar -->
       <button 
         class="text-red-500 hover:text-red-700 transition-all font-medium"
-        (click)="onDelete.emit(movie)"
+        (click)="onEdit.emit(movie)"
       >
         Eliminar
       </button>
