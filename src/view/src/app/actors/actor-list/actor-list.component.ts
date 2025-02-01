@@ -6,7 +6,7 @@ import { IActor } from '../../../../../models/Actor';
 import { ActorService } from '../../services/actor.service';
 
 @Component({
-  selector: 'app-actor-list',
+  selector: 'app-actor-list-view',
   standalone: true,
   imports: [
     CommonModule,

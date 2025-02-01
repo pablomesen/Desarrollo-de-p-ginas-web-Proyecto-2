@@ -9,10 +9,11 @@ import { IMovie } from '../../../../../models/Movie';
   templateUrl: './movie-card.component.html'
 })
 export class MovieCardComponent {
-  @Input() movie!: IMovie;
-  @Input() isAdmin = false;
+  @Input() movie: any; 
+  @Input() isAdmin = true; //ESTO VA FALSE
   @Output() onViewDetails = new EventEmitter<IMovie>();
   @Output() onDelete = new EventEmitter<IMovie>();
+  @Output() onEdit = new EventEmitter<any>();  // Evento de edición
 
   handleImageError(event: any): void {
     event.target.src = 'assets/placeholder.jpg';

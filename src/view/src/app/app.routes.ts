@@ -12,7 +12,7 @@ export const routes: Routes = [
   { path: 'catalog', component: CatalogComponent },
   { path: 'actors', component: ActorCatalogComponent }, 
   { path: 'actors/:id', component: ActorDetailComponent }, 
-  {path: 'movie-form', component: MovieFormComponent},
+  { path: 'movies/edit/:id', component: MovieFormComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },
 ];

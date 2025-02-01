@@ -1,25 +1,26 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './nav-bar.component.html',
+  templateUrl: './nav-bar.component.html'
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   isLoginOrRegister = false;
 
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    
     this.authService.isAuthenticated$.subscribe(
-      (isAuthenticated) => (this.isLoggedIn = isAuthenticated)
+      (isAuthenticated) => this.isLoggedIn = isAuthenticated
     );
   }
 
@@ -37,7 +38,7 @@ export class NavbarComponent implements OnInit {
       },
       error: (error) => {
         console.error('Logout failed:', error);
-      },
+      }
     });
   }
 }
