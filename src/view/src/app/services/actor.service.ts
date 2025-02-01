@@ -63,13 +63,17 @@ export class ActorService {
    * Delete an actor
    */
   deleteActor(id: string): Observable<{ message: string }> {
+    console.log('Intentando eliminar actor con _id:', id);
     return this.http.delete<{ message: string }>(`${this.apiUrl}/actor/${id}`).pipe(
-      tap((response) => {
-        console.log('Actor eliminado exitosamente:', response);
-      }),
-      catchError(this.handleError)
+        tap(response => {
+            console.log('Respuesta del servidor:', response);
+        }),
+        catchError(error => {
+            console.error('Error en deleteActor:', error);
+            return throwError(() => error);
+        })
     );
-  }
+}
 
   /**
    * Handle HTTP errors

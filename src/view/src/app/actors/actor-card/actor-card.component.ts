@@ -107,37 +107,35 @@ export class ActorCardComponent {
   }
 
   handleDelete(): void {
-    console.log("entre")
-    if (!this.actor || !this.actor.id) {
-      this.deleteError = 'ID de actor no válido';
-      return;
+    console.log("Iniciando eliminación del actor:", this.actor);
+    
+    // Accedemos al _id que viene de MongoDB aunque no esté en la interfaz
+    const mongoId = (this.actor as any)._id;
+    
+    if (!mongoId) {
+        console.error('No hay ID de actor válido');
+        this.deleteError = 'ID de actor no válido';
+        return;
     }
-  
-    this.actorService.deleteActor(this.actor.id).subscribe({
-      next: (response) => {
-        console.log('Respuesta exitosa:', response);
-        this.showDeleteConfirmation = false;
-        this.actorDeleted.emit(this.actor.id);
-      },
-      error: (error) => {
-        console.error('Error completo al eliminar:', error);
-        this.deleteError = error.error?.message || error.message || 'Error al eliminar el actor';
-        
-        // Si el error es 404, podemos asumir que el actor ya fue eliminado
-        if (error.status === 404) {
-          this.showDeleteConfirmation = false;
-          this.actorDeleted.emit(this.actor.id);
+
+    this.actorService.deleteActor(mongoId).subscribe({
+        next: () => {
+            console.log('Actor eliminado exitosamente');
+            this.showDeleteConfirmation = false;
+            this.actorDeleted.emit(mongoId);
+        },
+        error: (error) => {
+            console.error('Error al eliminar actor:', error);
+            
+            if (error.status === 404) {
+                console.log('Actor no encontrado, posiblemente ya eliminado');
+                this.showDeleteConfirmation = false;
+                this.actorDeleted.emit(mongoId);
+                return;
+            }
+            
+            this.deleteError = error.message || 'Error al eliminar el actor';
         }
-        
-        // Si es un error 500, mostramos más información
-        if (error.status === 500) {
-          console.log('ID del actor que causó el error:', this.actor.id);
-          console.log('Error completo del servidor:', error.error);
-        }
-      },
-      complete: () => {
-        console.log('Operación de eliminación completada');
-      }
     });
   }
 }

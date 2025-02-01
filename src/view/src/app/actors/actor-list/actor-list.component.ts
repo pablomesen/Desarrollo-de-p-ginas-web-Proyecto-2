@@ -40,6 +40,20 @@ export class ActorListComponent implements OnInit {
     );
   }
 
+  // Nuevo método para manejar la eliminación
+  onActorDeleted(actorId: string) {
+    // Actualizar ambos arrays removiendo el actor eliminado
+    this.actors = this.actors.filter(actor => (actor as any)._id !== actorId);
+    this.filteredActors = this.filteredActors.filter(actor => (actor as any)._id !== actorId);
+    
+    // Verificar si necesitamos ajustar la página actual
+    if (this.paginatedActors.length === 0 && this.currentPage > 1) {
+      this.currentPage--;
+    }
+    // Reaplicar la búsqueda para actualizar la lista filtrada
+    this.applySearch();
+  }
+
   onSearchActors(query: string) {
     this.searchQuery = query;
     this.applySearch();
@@ -47,17 +61,13 @@ export class ActorListComponent implements OnInit {
 
   applySearch() {
     let results = [...this.actors];
-
-    // Apply search
     if (this.searchQuery) {
       results = results.filter(actor =>
         actor.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
         actor.lastName.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     }
-
     this.filteredActors = results;
-    this.currentPage = 1;
   }
 
   get paginatedActors(): IActor[] {
