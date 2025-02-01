@@ -15,4 +15,5 @@ export const routes: Routes = [
   { path: 'movies/edit/:id', component: MovieFormComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },
+  //{ path: '', component: MovieFormComponent, pathMatch: 'full' },
 ];
