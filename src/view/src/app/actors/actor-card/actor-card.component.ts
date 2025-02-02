@@ -159,8 +159,8 @@ export class ActorCardComponent {
   
       const dialogRef = this.dialog.open( MovieDetailsDialogComponent, {
         data: formatedData,
-        width: '40vw',
-        height: '61vh',
+        width: '65vw',
+        height: '72vh',
         maxWidth: '95vw',
         maxHeight: '95vh'
       });
