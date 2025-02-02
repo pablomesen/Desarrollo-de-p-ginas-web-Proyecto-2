@@ -55,7 +55,7 @@ export class MovieFormComponent {
   castInput = new FormControl('');
   genreInput = new FormControl('');
   
-  allActors : string[] = []; // Replace the hardcoded array with this
+  allActors : string[] = []; 
   
   allGenres = [
     'Action', 'Comedy', 'Drama', 'Fantasy', 

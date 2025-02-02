@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError, tap } from 'rxjs';
+import { Observable, catchError, throwError, tap, of } from 'rxjs';
 import { IActor } from '../../../../models/Actor';
 
 @Injectable({
@@ -26,15 +26,14 @@ export class ActorService {
   /**
    * Get actor by ID
    */
-  getActorById(id: string): Observable<IActor> {
-    return this.http.get<IActor>(`${this.apiUrl}/getActor/${id}`).pipe(
-      tap((data) => {
-        console.log('Detalles del actor obtenidos:', data);
-      }),
-      catchError(this.handleError)
-    );
+  getActorById(actorId: string): Observable<IActor | undefined> { 
+    return this.http.get<IActor>(`${this.apiUrl}/actors/${actorId}`)
+      .pipe(
+        catchError(err => of(undefined))
+      )
+    ;
   }
-
+  
   /**
    * Add a new actor
    */

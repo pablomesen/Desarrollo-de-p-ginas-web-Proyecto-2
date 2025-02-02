@@ -75,7 +75,7 @@ export async function getMovieById(movieId: string): Promise<IMovie | null> {
         const movie = await Movie.findById(movieId);
         return movie;
     } catch (error) {
-        console.error('Error fetching movie:', error);
-        throw new Error('Failed to fetch movie.');
+        console.error('Error fetching movie by ID:', error);
+        throw new Error('Failed to fetch movie by ID.');
     }
 }

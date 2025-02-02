@@ -1,4 +1,10 @@
 /* movie-form.component.scss */
+
+
+.actor-title {
+    color: #ffffff; /* Replace with your desired color */
+}
+
 .form-container {
     max-width: 800px;
     margin: 2rem auto;
@@ -19,7 +25,7 @@
 .section-title {
     margin-top: 0;
     margin-bottom: 1.5rem;
-    color: #3f51b5;
+    color: #39ddde;
     font-weight: 500;
 }
 
@@ -70,4 +76,8 @@
     margin-right: 0.5rem;
 }
 
+/* Add this to your component's CSS file (e.g., movie-form.component.css) */
+.birth-date {
+    width: 200px; /* Adjust the width as needed */
+  }
 
