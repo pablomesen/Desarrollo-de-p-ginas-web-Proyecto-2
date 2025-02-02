@@ -1,4 +1,4 @@
-import Actor from "../models/Actor";
+import Actor, { IActor } from "../models/Actor";
 import { IMovie } from "../models/Movie";
 
 // Adds a new actor to the database
@@ -58,4 +58,15 @@ export async function deleteActor(
         return false;
     }
     return true;
+}
+
+// Gets an actor by ID from the database
+export async function getActorById(actorId: string): Promise<IActor | null> {
+    try {
+        const actor = await Actor.findById(actorId);
+        return actor;
+    } catch (error) {
+        console.error('Error getting actor by ID:', error);
+        throw new Error('Failed to get actor by ID.');
+    }
 }

@@ -11,10 +11,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, startWith, switchMap } from 'rxjs';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { IActor } from '../../../../../models/Actor';
+import { IMovie } from '../../../../../models/Movie';
+import { MovieService } from '../../services/movie.service';
+import { ActorService } from '../../services/actor.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 
 
@@ -38,27 +45,35 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './movie-form.component.html',
   styleUrls: ['./movie-form.component.scss']
 })
+
+
+
 export class MovieFormComponent {
+
+  public formMode: 'add' | 'edit' = 'add';
   movieForm: FormGroup;
   castInput = new FormControl('');
   genreInput = new FormControl('');
   
-  allActors = [
-    'Tom Hanks', 'Meryl Streep', 'Leonardo DiCaprio', 
-    'Jennifer Lawrence', 'Denzel Washington', 'Scarlett Johansson'
-  ];
+  allActors : string[] = []; 
   
   allGenres = [
     'Action', 'Comedy', 'Drama', 'Fantasy', 
-    'Horror', 'Mystery', 'Romance', 'Thriller'
+    'Horror', 'Mystery', 'Romance', 'Thriller',
+    'Sci-Fi', 'Western', 'Animation', 'Adventure',
+    'Crime', 'Documentary', 'Family', 'History'
   ];
 
   filteredActors: Observable<string[]>;
   filteredGenres: Observable<string[]>;
 
-  constructor(
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
+  constructor( 
+    private fb: FormBuilder, 
+    private snackBar: MatSnackBar,
+    private movieService: MovieService,
+    private actorService: ActorService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router   
   ) {
     
     this.movieForm = this.fb.group({
@@ -83,10 +98,16 @@ export class MovieFormComponent {
     );
   }
 
+
+  get currentMovie(): IMovie {
+    const movie = this.movieForm.value as IMovie;
+    return movie;
+  }
+
   private _filterActors(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.allActors.filter(actor => 
-      actor.toLowerCase().includes(filterValue)
+    return this.allActors.filter(fullName =>
+      fullName.toLowerCase().includes(filterValue)
     );
   }
 
@@ -96,7 +117,7 @@ export class MovieFormComponent {
       genre.toLowerCase().includes(filterValue)
     );
   }
-
+  
   // Form array getters
   get cast() {
     return this.movieForm.get('cast') as FormArray;
@@ -112,38 +133,45 @@ export class MovieFormComponent {
 
   // Cast methods
   addCastFromInput() {
-    const value = this.castInput.value?.trim();
-
-    // Check if the actor is in the database (allActors)
-    if (value && this.allActors.includes(value)) {
+    const value = this.castInput.value?.trim(); // Safe access using optional chaining
+  
+    if (!value) {
+      this.snackBar.open('Please enter an actor name.', 'Close', { duration: 3000 });
+      return; // Exit early if no value is provided
+    }
+  
+    // Check if the actor is in the allActors array
+    if (this.allActors.includes(value)) {
       // Check if the actor is already in the cast array
       const isDuplicate = this.cast.controls.some(
         control => control.value.toLowerCase() === value.toLowerCase()
       );
   
       if (isDuplicate) {
-        this.snackBar.open('This actor is already added.', 'Close', { duration: 3000 }); // Or use a more user-friendly feedback mechanism
+        this.snackBar.open('This actor is already added.', 'Close', { duration: 3000 });
       } else {
-        this.cast.push(this.fb.control(value));
+        this.cast.push(this.fb.control(value)); // Add the full name as a string
         this.castInput.setValue('');
       }
     } else {
-      this.snackBar.open('Actor not found in the database.', 'Close', { duration: 3000 }); // Or use a more user-friendly feedback mechanism
+      this.snackBar.open('Actor not found in the database.', 'Close', { duration: 3000 });
     }
   }
 
+
+
   onCastOptionSelected(event: MatAutocompleteSelectedEvent) {
-    const selectedActor = event.option.value;
+    const selectedActorName = event.option.value;
 
     // Check if the actor is already in the cast array
     const isDuplicate = this.cast.controls.some(
-      control => control.value.toLowerCase() === selectedActor.toLowerCase()
+      control => control.value.toLowerCase() === selectedActorName.toLowerCase()
     );
-  
+
     if (isDuplicate) {
       this.snackBar.open('This actor is already added.', 'Close', { duration: 3000 });
     } else {
-      this.cast.push(this.fb.control(selectedActor));
+      this.cast.push(this.fb.control(selectedActorName)); // Add the full name as a string
       this.castInput.setValue('');
     }
   }
@@ -156,21 +184,21 @@ export class MovieFormComponent {
   addGenreFromInput() {
     const value = this.genreInput.value?.trim();
 
-    // Check if the genre is in the database (allGenres)
-    if (value && this.allGenres.includes(value)) {
-      // Check if the genre is already in the genres array
-      const isDuplicate = this.genres.controls.some(
-        control => control.value.toLowerCase() === value.toLowerCase()
-      );
-
-      if (isDuplicate) {
-        this.snackBar.open('This genre is already added.', 'Close', { duration: 3000 });
-      } else {
-        this.genres.push(this.fb.control(value));
-        this.genreInput.setValue('');
-      }
+    if (!value) {
+      this.snackBar.open('Please enter a genre.', 'Close', { duration: 3000 });
+      return; // Exit early if no value is provided
+    }
+  
+    // Check if the genre is already in the genres array
+    const isDuplicate = this.genres.controls.some(
+      control => control.value.toLowerCase() === value.toLowerCase()
+    );
+  
+    if (isDuplicate) {
+      this.snackBar.open('This genre is already added.', 'Close', { duration: 3000 });
     } else {
-      this.snackBar.open('Genre not found in the database.', 'Close', { duration: 3000 });
+      this.genres.push(this.fb.control(value)); // Add the genre as a string
+      this.genreInput.setValue('');
     }
   }
 
@@ -181,11 +209,11 @@ export class MovieFormComponent {
     const isDuplicate = this.genres.controls.some(
       control => control.value.toLowerCase() === selectedGenre.toLowerCase()
     );
-
+  
     if (isDuplicate) {
       this.snackBar.open('This genre is already added.', 'Close', { duration: 3000 });
     } else {
-      this.genres.push(this.fb.control(event.option.value));
+      this.genres.push(this.fb.control(selectedGenre)); // Add the genre as a string
       this.genreInput.setValue('');
     }
   }
@@ -203,11 +231,118 @@ export class MovieFormComponent {
     this.images.removeAt(index);
   }
 
+  fetchActors(): void {
+    this.actorService.getActors().subscribe(
+      actors => {
+        // Map the actors to their full names (name + lastName)
+        this.allActors = actors.map(actor => `${actor.name} ${actor.lastName}`);
+      },
+      error => {
+        console.error('Error fetching actors:', error);
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.fetchActors();
+  
+    // If the form is used to add a new movie, the form should be initialized here
+    if (this.router.url.includes('new-movie')) {
+      console.log('New movie form');
+      return;
+    }
+  
+    console.log('Edit movie form');
+    // If the form is used to edit a movie, the movie data should be loaded here
+    this.formMode = 'edit';
+  
+    this.activatedRoute.params
+      .pipe(
+        switchMap(({ id }) => this.movieService.getMovieById(id))
+      ).subscribe(movie => {
+        if (!movie) {
+          console.error('Movie not found');
+          this.router.navigateByUrl('/new-movie');
+          return; // Explicitly return void
+        }
+  
+        // Reset the form with the movie data
+        this.movieForm.reset(movie);
+  
+        // Clear the existing cast and genres arrays
+        this.cast.clear();
+        this.genres.clear();
+  
+        // Populate the cast FormArray
+        if (movie.cast && Array.isArray(movie.cast)) {
+          movie.cast.forEach(actor => {
+            this.cast.push(this.fb.control(actor));
+          });
+        }
+  
+        // Populate the genres FormArray
+        if (movie.genres && Array.isArray(movie.genres)) {
+          movie.genres.forEach(genre => {
+            this.genres.push(this.fb.control(genre));
+          });
+        }
+  
+        return; // Explicitly return void
+      });
+  }
+
+
+
+  // onSubmit() {
+  //   if (this.movieForm.valid) {
+  //     console.log('Form submitted', this.movieForm.value);
+  //   } else {
+  //     console.log('Form is invalid');
+  //   }
+  // }
+
   onSubmit() {
     if (this.movieForm.valid) {
-      console.log('Form submitted', this.movieForm.value);
+      const movieData = this.movieForm.value as IMovie; // Get the form data
+      
+      if (this.formMode === 'add'){
+      // Call the service to add the movie
+        this.movieService.addMovie(movieData).subscribe({
+          next: (response) => {
+            // Handle success
+            this.snackBar.open('Movie added successfully!', 'Close', { duration: 3000 });
+            this.router.navigate(['/catalog']); // Redirect to the movies list page
+          },
+          error: (error) => {
+            // Handle error
+            console.error('Error creating movie:', error);
+            this.snackBar.open('Failed to create movie. Please try again.', 'Close', { duration: 3000 });
+          }
+        });
+
+
+      } else if (this.formMode === 'edit') {
+        // Get the movie ID from the route
+        const movieId = this.activatedRoute.snapshot.params['id'];
+  
+        // Call the service to update the movie
+        this.movieService.editMovie(movieId, movieData).subscribe({
+          next: (response) => {
+            // Handle success
+            this.snackBar.open('Movie updated successfully!', 'Close', { duration: 3000 });
+            this.router.navigate(['/catalog']); // Redirect to the movies list page
+          },
+          error: (error) => {
+            // Handle error
+            console.error('Error updating movie:', error);
+            this.snackBar.open('Failed to update movie. Please try again.', 'Close', { duration: 3000 });
+          }
+        });
+      }
+
     } else {
-      console.log('Form is invalid');
+      // Handle invalid form
+      this.snackBar.open('Please fill out all required fields correctly.', 'Close', { duration: 3000 });
     }
   }
 }

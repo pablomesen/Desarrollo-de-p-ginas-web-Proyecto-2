@@ -10,6 +10,21 @@ router.get('/getActors', async (req, res) => {
     res.json(actors);
 });
 
+// Route to get an actor by ID
+router.get('/actors/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const actor = await actorController.getActorById(id);
+        if (actor) {
+            res.status(200).json(actor);
+        } else {
+            res.status(404).json({ error: 'Actor not found.' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch actor.' });
+    }
+});
+
 // Route to add a new actor
 router.post('/actors', async (req, res) => {
     try {

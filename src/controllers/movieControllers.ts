@@ -68,3 +68,14 @@ export async function deleteMovie(movieId: string): Promise<boolean> {
         throw new Error('Failed to delete movie.');
     }
 }
+
+// Gets a movie by ID from the database
+export async function getMovieById(movieId: string): Promise<IMovie | null> {
+    try {
+        const movie = await Movie.findById(movieId);
+        return movie;
+    } catch (error) {
+        console.error('Error fetching movie by ID:', error);
+        throw new Error('Failed to fetch movie by ID.');
+    }
+}
