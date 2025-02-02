@@ -11,7 +11,7 @@ import { MovieDetailsDialogComponent } from '../movie-details-dialog/movie-detai
   templateUrl: './movie-card.component.html'
 })
 export class MovieCardComponent {
-  @Input() movie: any; 
+  @Input() movie!: IMovie; // Estaba tipado como "any", lo cambie a "IMovie" 
   @Input() isAdmin = true; //ESTO VA FALSE
   @Output() onViewDetails = new EventEmitter<IMovie>();
   @Output() onDelete = new EventEmitter<IMovie>();
@@ -33,8 +33,24 @@ export class MovieCardComponent {
   // Calling the details dialog method
   onDetails(): void {
     if (!this.movie) { return }
+
+    const formatedData = {
+      // "Shared" properties with actor
+      isMovie: true,
+      title1: this.movie.title,
+      title2: "Dirigida por: " + this.movie.director,
+      description: this.movie.description,
+      date: this.movie.releaseDate,
+      images: this.movie.images,
+
+      // Exlcusive movie properties
+      calification: this.movie.calification,
+      genres: this.movie.genres,
+      cast: this.movie.cast
+    }
+
     const dialogRef = this.dialog.open( MovieDetailsDialogComponent, {
-      data: this.movie,
+      data: formatedData,
       width: '65vw',
       height: '72vh',
       maxWidth: '95vw',

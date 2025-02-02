@@ -1,14 +1,16 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IActor } from '../../../../../models/Actor';
 import { ActorService } from '../../services/actor.service';
+import { MovieDetailsDialogComponent } from '../../catalog/movie-details-dialog/movie-details-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-actor-card',
   standalone: true,
   templateUrl: './actor-card.component.html',
-  imports: [CommonModule], // Ensure CommonModule is included here
+  imports: [CommonModule],
   styles: [`
     :host {
       display: block;
@@ -27,6 +29,10 @@ export class ActorCardComponent {
   deleteError = '';
 
   placeholderImage: string = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2U2ZTZlNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiM2NjY2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5TaW4gaW1hZ2VuPC90ZXh0Pjwvc3ZnPg==';
+
+  constructor (
+      private dialog: MatDialog
+    ) { }
 
   hasMultipleImages(): boolean {
     return Array.isArray(this.actor.images) && this.actor.images.length > 1;
@@ -133,4 +139,30 @@ export class ActorCardComponent {
         }
     });
   }
+
+  // Calling the details dialog method
+    onDetails(): void {
+      if (!this.actor) { return }
+  
+      const formatedData = {
+        // "Shared" properties with movie
+        isMovie: false,
+        title1: this.actor.name,
+        title2: this.actor.lastName,
+        description: this.actor.biography,
+        date: this.actor.birthDate,
+        images: this.actor.images,
+  
+        // Exlcusive actor properties
+        movies: this.actor.movies 
+      }
+  
+      const dialogRef = this.dialog.open( MovieDetailsDialogComponent, {
+        data: formatedData,
+        width: '40vw',
+        height: '61vh',
+        maxWidth: '95vw',
+        maxHeight: '95vh'
+      });
+    }
 }
