@@ -29,7 +29,8 @@ export class RegisterComponent {
         Validators.minLength(8),
         Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
       ]],
-      confirmPassword: ['', [Validators.required]]
+      confirmPassword: ['', [Validators.required]],
+      isAdmin: [false] // New form control for role toggle
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -47,7 +48,7 @@ export class RegisterComponent {
         userName: this.registerForm.get('fullName')?.value,
         email: this.registerForm.get('email')?.value,
         password: this.registerForm.get('password')?.value,
-        role: 'user' // Default role
+        role: this.registerForm.get('isAdmin')?.value ? 'admin' : 'user'
       };
 
       this.authService.register(registrationData).subscribe({
@@ -57,7 +58,7 @@ export class RegisterComponent {
             this.registrationSuccess = '¡Registro exitoso! Redirigiendo al inicio de sesión...';
             setTimeout(() => {
               this.router.navigate(['/auth/login']);
-            }, 3000); // Redirige después de 3 segundos
+            }, 3000);
           } else {
             this.registrationError = response.msg || 'Error en el registro';
           }
