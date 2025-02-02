@@ -1,68 +1,53 @@
-<div class="bg-white shadow-custom border rounded-xl overflow-hidden">
+<div class="bg-[#1F2937] shadow-custom border border-gray-700 rounded-xl overflow-hidden">
   <div class="relative h-72 group">
-    <img 
-      [src]="movie.images[0]" 
+    <img
+      [src]="movie.images[0]"
       [alt]="movie.title"
       class="w-full h-72 object-cover transition-all duration-300"
       (error)="handleImageError($event)"
     >
-
-    <!-- Botón Eliminar (para administradores) -->
-    <button 
-      *ngIf="isAdmin"
-      (click)="onDelete.emit(movie)"
-      class="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-600"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 6h18"></path>
-        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-      </svg>
-    </button>
   </div>
 
   <div class="p-4">
-    <h3 class="text-lg font-bold text-teal-custom truncate">{{ movie.title }}</h3>
-    <p class="text-sm text-gray-600 line-clamp-2">{{ movie.description }}</p>
-    <p class="text-sm text-gray-600 mt-1">{{ movie.director }}</p>
+    <h3 class="text-lg font-bold text-teal-400 truncate">{{ movie.title }}</h3>
+    <p class="text-sm text-gray-300 line-clamp-2">{{ movie.description }}</p>
+    <p class="text-sm text-gray-300 mt-1">{{ movie.director }}</p>
     <div class="flex items-center mt-2">
-      <span class="text-yellow-500">★</span>
-      <span class="ml-1">{{ movie.calification }}/10</span>
+      <span class="text-yellow-400">★</span>
+      <span class="ml-1 text-gray-300">{{ movie.calification }}/10</span>
     </div>
     <div class="mt-2 flex flex-wrap gap-1">
-      <span 
-        *ngFor="let genre of movie.genres" 
-        class="text-xs px-2 py-1 bg-teal-50 text-teal-700 rounded-full"
+      <span
+        *ngFor="let genre of movie.genres"
+        class="text-xs px-2 py-1 bg-teal-600 text-white rounded-full"
       >
         {{ genre }}
       </span>
     </div>
 
     <div class="mt-4 flex justify-between">
-      <!-- Botón Ver más -->
-      <button 
-        class="text-teal-500 hover:text-teal-700 transition-all font-medium"
-        (click)="onDetails()" 
+      <button
+        class="text-teal-400 hover:text-teal-300 transition-all font-medium"
+        (click)="onDetails()"
       >
         Ver más
       </button>
 
-      <!-- Botón Editar -->
-      <button 
-        class="text-blue-500 hover:text-blue-700 transition-all font-medium"
-        (click)="editMovie()"
-      >
-        Editar
-      </button>
+      <ng-container *ngIf="isAdmin">
+        <button
+          class="text-blue-400 hover:text-blue-300 transition-all font-medium"
+          (click)="editMovie()"
+        >
+          Editar
+        </button>
 
-      <!-- Botón Eliminar -->
-      <button 
-        class="text-red-500 hover:text-red-700 transition-all font-medium"
-        (click)="onEdit.emit(movie)"
-      >
-        Eliminar
-      </button>
+        <button
+          class="text-red-400 hover:text-red-300 transition-all font-medium"
+          (click)="deleteMovie()"
+        >
+          Eliminar
+        </button>
+      </ng-container>
     </div>
   </div>
 </div>

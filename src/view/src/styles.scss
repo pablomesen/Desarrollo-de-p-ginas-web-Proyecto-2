@@ -2,5 +2,16 @@
 @use 'tailwindcss/base' as *;
 @use 'tailwindcss/components' as *;
 @use 'tailwindcss/utilities' as *;
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #1F2937;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }

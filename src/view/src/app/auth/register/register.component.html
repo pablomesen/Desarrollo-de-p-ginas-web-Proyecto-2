@@ -1,112 +1,112 @@
-<div class="min-h-screen flex items-center justify-center p-6" style="background-color: #051f1f;">
-  <div class="max-w-5xl w-full bg-teal-custom/20 backdrop-blur-lg rounded-xl shadow-2xl overflow-hidden flex">
+<div class="min-h-screen flex items-center justify-center p-6" style="background-color: #1F2937;">
+  <div class="max-w-5xl w-full bg-gray-800 backdrop-blur-lg rounded-xl shadow-2xl overflow-hidden flex">
     <!-- Form Section -->
     <div class="w-full md:w-1/2 p-8">
       <h2 class="text-2xl font-semibold text-white mb-8">Crear Cuenta</h2>
 
-      <div *ngIf="registrationSuccess" class="text-green-300 text-sm mt-1">
+      <div *ngIf="registrationSuccess" class="text-green-400 text-sm mt-1">
         {{ registrationSuccess }}
       </div>
-      <div *ngIf="registrationError" class="text-red-300 text-sm mt-1">
+      <div *ngIf="registrationError" class="text-red-400 text-sm mt-1">
         {{ registrationError }}
       </div>
 
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <div>
-          <label for="fullName" class="block text-white text-sm mb-2">
+          <label for="fullName" class="block text-gray-300 text-sm mb-2">
             Nombre Completo
           </label>
           <input
             id="fullName"
             type="text"
             formControlName="fullName"
-            class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            class="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
             placeholder="Tu nombre completo"
           />
           <div
             *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.errors?.['required']"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             Nombre completo es requerido
           </div>
         </div>
 
         <div>
-          <label for="email" class="block text-white text-sm mb-2">
+          <label for="email" class="block text-gray-300 text-sm mb-2">
             Correo electrónico
           </label>
           <input
             id="email"
             type="email"
             formControlName="email"
-            class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            class="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
             placeholder="Tu correo electrónico"
           />
           <div
             *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             Email es requerido
           </div>
           <div
             *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             Formato de email inválido
           </div>
         </div>
 
         <div>
-          <label for="password" class="block text-white text-sm mb-2">
+          <label for="password" class="block text-gray-300 text-sm mb-2">
             Contraseña
           </label>
           <input
             id="password"
             type="password"
             formControlName="password"
-            class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            class="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
             placeholder="Contraseña"
           />
           <div
             *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             Contraseña es requerida
           </div>
           <div
             *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             La contraseña debe tener al menos 8 caracteres
           </div>
           <div
             *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['pattern']"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             La contraseña debe contener letras, números y un carácter especial
           </div>
         </div>
 
         <div>
-          <label for="confirmPassword" class="block text-white text-sm mb-2">
+          <label for="confirmPassword" class="block text-gray-300 text-sm mb-2">
             Confirmar Contraseña
           </label>
           <input
             id="confirmPassword"
             type="password"
             formControlName="confirmPassword"
-            class="w-full px-3 py-2 rounded bg-white/80 border border-teal-300 text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            class="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
             placeholder="Confirmar contraseña"
           />
           <div
             *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             Confirmación de contraseña es requerida
           </div>
           <div
             *ngIf="registerForm.hasError('passwordMismatch')"
-            class="text-red-300 text-sm mt-1"
+            class="text-red-400 text-sm mt-1"
           >
             Las contraseñas no coinciden
           </div>
@@ -120,26 +120,22 @@
               formControlName="isAdmin"
               class="sr-only peer"
             />
-            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-            <span class="ms-3 text-sm font-medium text-white">Registrar como Administrador</span>
+            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-500 rounded-full peer peer-checked:bg-teal-500"></div>
+            <span class="ms-3 text-sm font-medium text-gray-300">Registrar como Administrador</span>
           </label>
-        </div>
-
-        <div *ngIf="registrationError" class="text-red-300 text-sm mt-1">
-          {{ registrationError }}
         </div>
 
         <button
           type="submit"
           [disabled]="registerForm.invalid"
-          class="w-full bg-teal-custom hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Registrarse
         </button>
       </form>
 
       <div class="mt-6 flex justify-center text-sm">
-        <a routerLink="/auth/login" class="text-teal-custom hover:text-white transition duration-200">
+        <a routerLink="/auth/login" class="text-teal-400 hover:text-white transition duration-200">
           ¿Ya tienes una cuenta? Iniciar Sesión
         </a>
       </div>
