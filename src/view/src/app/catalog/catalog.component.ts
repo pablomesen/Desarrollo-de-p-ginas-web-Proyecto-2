@@ -25,8 +25,11 @@ export class CatalogComponent implements OnInit {
   moviesPerPage = 12;
   searchQuery = '';
   activeFilters: any = {};
+  showDeleteConfirmation = false;
+  movieToDelete: IMovie | null = null;
+  deleteError: string | null = null;
 
-  constructor(private movieService: MovieService, private snackBar: MatSnackBar,) {}
+  constructor(private movieService: MovieService, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.getMovies();
@@ -40,30 +43,48 @@ export class CatalogComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching movies:', error);
+        this.snackBar.open('Error al cargar las películas', 'Close', { duration: 3000 });
       }
     });
   }
 
-  deleteMovie(movie: IMovie) {
-    if (confirm(`¿Estás seguro de que deseas eliminar "${movie.title}"?`)) {
-      const index = this.movies.findIndex(m => m === movie);
-      if (index !== -1) {
-        this.movieService.deleteMovie(movie._id).subscribe({
-          next: (response) => {
-            this.movies.splice(index, 1);
-            this.applyFiltersAndSearch();
-            this.snackBar.open('Película eliminada con éxita', 'Close', { duration: 3000 });
-          },
-          error: (error) => {
-            console.error('Error al eliminar la película:', error);
-            if (error.status === 404) {
-              this.snackBar.open('No se encontró la película', 'Close', { duration: 3000 });
-            } else {
-              this.snackBar.open('Ha ocurrido un error a la hora de eliminar la película', 'Close', { duration: 3000 });
-            }
+  onDeleteClick(movie: IMovie) {
+    this.movieToDelete = movie;
+    this.showDeleteConfirmation = true;
+    this.deleteError = null;
+  }
+
+  cancelDelete() {
+    this.showDeleteConfirmation = false;
+    this.movieToDelete = null;
+    this.deleteError = null;
+  }
+
+  handleDelete() {
+    if (!this.movieToDelete) return;
+
+    const movie = this.movieToDelete;
+    const index = this.movies.findIndex(m => m === movie);
+    
+    if (index !== -1) {
+      this.movieService.deleteMovie(movie._id).subscribe({
+        next: (response) => {
+          this.movies.splice(index, 1);
+          this.applyFiltersAndSearch();
+          this.snackBar.open('Película eliminada con éxito', 'Close', { duration: 3000 });
+          this.showDeleteConfirmation = false;
+          this.movieToDelete = null;
+          this.deleteError = null;
+        },
+        error: (error) => {
+          console.error('Error al eliminar la película:', error);
+          if (error.status === 404) {
+            this.deleteError = 'No se encontró la película';
+          } else {
+            this.deleteError = 'Ha ocurrido un error al eliminar la película';
           }
-        });
-      }
+        }
+      });
     }
   }
 

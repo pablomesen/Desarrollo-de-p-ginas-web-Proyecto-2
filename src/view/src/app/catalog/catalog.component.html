@@ -4,40 +4,69 @@
     <div class="md:col-span-1">
       <app-filter (filterChange)="onFilterChange($event)"></app-filter>
     </div>
-    
+   
     <!-- Main Content -->
     <div class="md:col-span-3">
       <app-search-area (searchMovies)="onSearchMovies($event)"></app-search-area>
-      
+     
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        <div 
-          *ngFor="let movie of paginatedMovies" 
+        <div
+          *ngFor="let movie of paginatedMovies"
           class="relative group"
         >
-          <!-- Enlace el evento de eliminación -->
-          <app-movie-card 
-            [movie]="movie" 
-            (onDelete)="deleteMovie(movie)"
+          <app-movie-card
+            [movie]="movie"
+            (onDelete)="onDeleteClick(movie)"
           ></app-movie-card>
         </div>
       </div>
-
       <!-- Paginación -->
       <div class="flex justify-center mt-6">
         <button
           *ngIf="currentPage > 1"
           (click)="previousPage()"
-          class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+          class="mx-2 px-4 py-2 text-teal-400 hover:text-teal-300 transition-all rounded-xl"
         >
           Anterior
         </button>
-        <span class="mx-4">Página {{ currentPage }} de {{ totalPages }}</span>
+        <span class="mx-4 text-gray-300">Página {{ currentPage }} de {{ totalPages }}</span>
         <button
           *ngIf="currentPage < totalPages"
           (click)="nextPage()"
-          class="mx-2 px-4 py-2 bg-teal-custom text-white rounded-xl"
+          class="mx-2 px-4 py-2 text-teal-400 hover:text-teal-300 transition-all rounded-xl"
         >
           Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showDeleteConfirmation"
+       class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+       (click)="cancelDelete()">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-custom border border-gray-700 max-w-sm w-full mx-4"
+         (click)="$event.stopPropagation()">
+      <h3 class="text-lg font-bold text-gray-300 mb-4">
+        Confirmar eliminación
+      </h3>
+      <p class="text-gray-400 mb-6">
+        ¿Estás seguro de que deseas eliminar "{{ movieToDelete?.title }}"?
+      </p>
+     
+      <!-- Error mensaje -->
+      <p *ngIf="deleteError" class="text-red-400 mb-4">
+        {{ deleteError }}
+      </p>
+      <div class="flex justify-end space-x-4">
+        <button
+          (click)="cancelDelete()"
+          class="px-4 py-2 text-gray-400 hover:text-gray-200 transition-colors rounded-md">
+          Cancelar
+        </button>
+        <button
+          (click)="handleDelete()"
+          class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+          Eliminar
         </button>
       </div>
     </div>
