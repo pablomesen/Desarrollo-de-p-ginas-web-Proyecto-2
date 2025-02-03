@@ -110,10 +110,13 @@ export class ActorCardComponent implements OnInit {
   }
 
   // Lógica del botón Editar
-  editActor(): void {
+  editActor(actor: any): void {
     if (!this.isAdmin) return;
-    console.log('Editar actor:', this.actor);
-    // Aquí puedes agregar la lógica para abrir un formulario de edición o redirigir
+    
+    console.log('Editar actor con ID:', actor._id);
+    
+    this.router.navigate(['/edit-actor', actor._id]);
+    
   }
 
   onDeleteClick(event: Event): void {

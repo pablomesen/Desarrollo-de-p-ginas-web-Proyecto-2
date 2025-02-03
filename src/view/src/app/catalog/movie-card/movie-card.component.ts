@@ -1,9 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { IMovie } from '../../../../../models/Movie';
 import { MatDialog } from '@angular/material/dialog';
 import { MovieDetailsDialogComponent } from '../movie-details-dialog/movie-details-dialog.component';
 import { AuthService } from '../../services/auth.service';
+
 
 @Component({
   selector: 'app-movie-card',
@@ -20,7 +22,8 @@ export class MovieCardComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -35,9 +38,14 @@ export class MovieCardComponent implements OnInit {
     event.target.src = 'assets/placeholder.jpg';
   }
 
-  editMovie() {
+  
+
+  editMovie(movie: any): void {
     if (!this.isAdmin) return;
-    this.onEdit.emit(this.movie);
+  
+    
+    this.router.navigate(['/edit-movie', movie._id]);
+    
   }
 
   deleteMovie() {
