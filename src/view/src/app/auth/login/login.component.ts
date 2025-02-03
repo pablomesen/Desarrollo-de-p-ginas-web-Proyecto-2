@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -18,7 +19,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]], // Requerido y formato de correo
@@ -36,15 +38,13 @@ export class LoginComponent {
         (response) => {
           console.log('Login response:', response);
           if (response.opCode === 0) {
-            alert('Login exitoso');
             this.router.navigate(['/catalog']);
           } else {
-            alert('Error: Usuario o contraseña incorrectos');
+            this.snackBar.open('Contraseña incorrecta', 'Close', { duration: 3000 });
           }
         },
         (error) => {
-          console.error('Error al hacer login:', error);
-          alert('Hubo un error en el servidor. Inténtalo más tarde.');
+          this.snackBar.open('Credenciales incorrectas', 'Close', { duration: 3000 });
         }
       );
     }

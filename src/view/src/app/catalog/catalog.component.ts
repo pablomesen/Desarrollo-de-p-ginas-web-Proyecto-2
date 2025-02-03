@@ -5,6 +5,7 @@ import { SearchAreaComponent } from './search-area/search-area.component';
 import { FilterComponent } from '../filter/filter.component';
 import { IMovie } from '../../../../models/Movie';
 import { MovieService } from '../services/movie.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-catalog',
@@ -25,7 +26,7 @@ export class CatalogComponent implements OnInit {
   searchQuery = '';
   activeFilters: any = {};
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService, private snackBar: MatSnackBar,) {}
 
   ngOnInit() {
     this.getMovies();
@@ -51,14 +52,14 @@ export class CatalogComponent implements OnInit {
           next: (response) => {
             this.movies.splice(index, 1);
             this.applyFiltersAndSearch();
-            alert(response.message || 'Película eliminada con éxito');
+            this.snackBar.open('Película eliminada con éxita', 'Close', { duration: 3000 });
           },
           error: (error) => {
             console.error('Error al eliminar la película:', error);
             if (error.status === 404) {
-              alert('No se encontró la película');
+              this.snackBar.open('No se encontró la película', 'Close', { duration: 3000 });
             } else {
-              alert('Ha ocurrido un error al eliminar la película');
+              this.snackBar.open('Ha ocurrido un error a la hora de eliminar la película', 'Close', { duration: 3000 });
             }
           }
         });
