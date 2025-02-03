@@ -243,19 +243,67 @@ export class MovieFormComponent {
     );
   }
 
+  // ngOnInit(): void {
+  //   this.fetchActors();
+  
+  //   // If the form is used to add a new movie, the form should be initialized here
+  //   if (this.router.url.includes('new-movie')) {
+  //     console.log('New movie form');
+  //     return;
+  //   }
+  
+  //   console.log('Edit movie form');
+  //   // If the form is used to edit a movie, the movie data should be loaded here
+  //   this.formMode = 'edit';
+  
+  //   this.activatedRoute.params
+  //     .pipe(
+  //       switchMap(({ id }) => this.movieService.getMovieById(id))
+  //     ).subscribe(movie => {
+  //       if (!movie) {
+  //         console.error('Movie not found');
+  //         this.router.navigateByUrl('/new-movie');
+  //         return; // Explicitly return void
+  //       }
+  
+  //       // Reset the form with the movie data
+  //       this.movieForm.reset(movie);
+  
+  //       // Clear the existing cast and genres arrays
+  //       this.cast.clear();
+  //       this.genres.clear();
+  
+  //       // Populate the cast FormArray
+  //       if (movie.cast && Array.isArray(movie.cast)) {
+  //         movie.cast.forEach(actor => {
+  //           this.cast.push(this.fb.control(actor));
+  //         });
+  //       }
+  
+  //       // Populate the genres FormArray
+  //       if (movie.genres && Array.isArray(movie.genres)) {
+  //         movie.genres.forEach(genre => {
+  //           this.genres.push(this.fb.control(genre));
+  //         });
+  //       }
+  
+  //       return; // Explicitly return void
+  //     });
+  // }
+
   ngOnInit(): void {
     this.fetchActors();
-  
+    
     // If the form is used to add a new movie, the form should be initialized here
     if (this.router.url.includes('new-movie')) {
       console.log('New movie form');
       return;
     }
-  
+    
     console.log('Edit movie form');
     // If the form is used to edit a movie, the movie data should be loaded here
     this.formMode = 'edit';
-  
+    
     this.activatedRoute.params
       .pipe(
         switchMap(({ id }) => this.movieService.getMovieById(id))
@@ -265,32 +313,41 @@ export class MovieFormComponent {
           this.router.navigateByUrl('/new-movie');
           return; // Explicitly return void
         }
-  
+    
         // Reset the form with the movie data
         this.movieForm.reset(movie);
-  
+    
         // Clear the existing cast and genres arrays
         this.cast.clear();
         this.genres.clear();
-  
+    
         // Populate the cast FormArray
         if (movie.cast && Array.isArray(movie.cast)) {
           movie.cast.forEach(actor => {
             this.cast.push(this.fb.control(actor));
           });
         }
-  
+    
         // Populate the genres FormArray
         if (movie.genres && Array.isArray(movie.genres)) {
           movie.genres.forEach(genre => {
             this.genres.push(this.fb.control(genre));
           });
         }
-  
+    
+        // Clear the existing images array
+        this.images.clear();
+    
+        // Populate the images FormArray
+        if (movie.images && Array.isArray(movie.images)) {
+          movie.images.forEach(image => {
+            this.images.push(this.fb.control(image, Validators.required));
+          });
+        }
+    
         return; // Explicitly return void
       });
-  }
-
+  }  
 
 
   // onSubmit() {

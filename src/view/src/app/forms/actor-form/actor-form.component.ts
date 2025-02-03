@@ -71,22 +71,12 @@ export class ActorFormComponent {
 
     });
 
-    // this.filteredMovies = this.movieInput.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterMovies(value || ''))
-    // )
     this.filteredMovies = this.movieInput.valueChanges.pipe(
       startWith(''),
       map(value => this._filterMovies(value || ''))
     );
   }
 
-  // private _filterMovies(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.allMovies.filter(movieName =>
-  //     movieName.toLowerCase().includes(filterValue)
-  //   );
-  // }
   private _filterMovies(value: string): IMovie[] {
     const filterValue = value.toLowerCase();
     return this.allMovies.filter(movie =>
@@ -115,31 +105,6 @@ export class ActorFormComponent {
     return movie ? movie.title : '';
   }
 
-  // addMovieFromInput() {
-  //   const value = this.movieInput.value?.trim(); // Safe access using optional chaining
-  
-  //   if (!value) {
-  //     this.snackBar.open('Please enter a movie.', 'Close', { duration: 3000 });
-  //     return; // Exit early if no value is provided
-  //   }
-  
-  //   // Check if the movie is in the allActors array
-  //   if (this.allMovies.includes(value)) {
-  //     // Check if the movie is already in the cast array
-  //     const isDuplicate = this.movies.controls.some(
-  //       control => control.value.toLowerCase() === value.toLowerCase()
-  //     );
-  
-  //     if (isDuplicate) {
-  //       this.snackBar.open('This movie is already added.', 'Close', { duration: 3000 });
-  //     } else {
-  //       this.movies.push(this.fb.control(value)); // Add the full name as a string
-  //       this.movieInput.setValue('');
-  //     }
-  //   } else {
-  //     this.snackBar.open('Movie not found in the database.', 'Close', { duration: 3000 });
-  //   }
-  // }
   addMovieFromInput() {
     const value = this.movieInput.value?.trim(); // Safe access using optional chaining
   
@@ -168,21 +133,6 @@ export class ActorFormComponent {
     }
   }
 
-  // onMovieOptionSelected(event: MatAutocompleteSelectedEvent) {
-  //   const selectedActorName = event.option.value;
-
-  //   // Check if the actor is already in the cast array
-  //   const isDuplicate = this.movies.controls.some(
-  //     control => control.value.toLowerCase() === selectedActorName.toLowerCase()
-  //   );
-
-  //   if (isDuplicate) {
-  //     this.snackBar.open('This movie is already added.', 'Close', { duration: 3000 });
-  //   } else {
-  //     this.movies.push(this.fb.control(selectedActorName)); // Add the full name as a string
-  //     this.movieInput.setValue('');
-  //   }
-  // }
   onMovieOptionSelected(event: MatAutocompleteSelectedEvent) {
     const selectedMovie = event.option.value as IMovie; // Get the selected IMovie object
   
@@ -207,15 +157,6 @@ export class ActorFormComponent {
     this.images.removeAt(index);
   }
   
-
-  // fetchMovies() {
-  //   this.movieService.getMovies().subscribe(
-  //     movies => {
-  //       // Map the movies to their names)
-  //       this.allMovies = movies.map(movie => movie.title);
-  //     }
-  //   )
-  // }
   fetchMovies() {
     this.movieService.getMovies().subscribe(
       movies => {
@@ -224,19 +165,59 @@ export class ActorFormComponent {
     );
   }
 
+  // ngOnInit() {
+  //   this.fetchMovies();
+
+  //   // If the form is used to add a new actor, the form should be initialixed here
+  //   if (this.router.url.includes('new-actor')) {
+  //     console.log('New actor form');
+  //     return;
+  //   }
+
+  //   console.log('Edit actor form');
+  //   // If the form is used to edit an existing actor, the form should be initialized here
+  //   this.formMode = 'edit';
+
+  //   this.activatedRoute.params
+  //     .pipe(
+  //       switchMap(({ id }) => this.actorService.getActorById(id))
+  //     ).subscribe(actor => {
+  //       if (!actor) {
+  //         console.error('Actor not found');
+  //         this.router.navigateByUrl('/new-actor');
+  //         return; // Explicitly return void
+  //       }
+  
+  //       // Reset the form with the actor data
+  //       this.actorForm.reset(actor);
+  
+  //       // Clear the existing movies arrays
+  //       this.movies.clear();
+  
+  //       // Populate the movie FormArray
+  //       if (actor.movies && Array.isArray(actor.movies)) {
+  //         actor.movies.forEach(movie => {
+  //           this.movies.push(this.fb.control(movie));
+  //         });
+  //       }
+  
+  //       return; // Explicitly return void        
+  //     })
+  // }
+
   ngOnInit() {
     this.fetchMovies();
-
-    // If the form is used to add a new actor, the form should be initialixed here
+  
+    // If the form is used to add a new actor, the form should be initialized here
     if (this.router.url.includes('new-actor')) {
       console.log('New actor form');
       return;
     }
-
+  
     console.log('Edit actor form');
     // If the form is used to edit an existing actor, the form should be initialized here
     this.formMode = 'edit';
-
+  
     this.activatedRoute.params
       .pipe(
         switchMap(({ id }) => this.actorService.getActorById(id))
@@ -260,8 +241,18 @@ export class ActorFormComponent {
           });
         }
   
+        // Clear the existing images arrays
+        this.images.clear();
+  
+        // Populate the images FormArray
+        if (actor.images && Array.isArray(actor.images)) {
+          actor.images.forEach(image => {
+            this.images.push(this.fb.control(image, Validators.required));
+          });
+        }
+  
         return; // Explicitly return void        
-      })
+      });
   }
 
   onSubmit() {
