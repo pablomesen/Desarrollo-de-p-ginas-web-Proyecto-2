@@ -11,7 +11,7 @@
                     <div class="bg-gray-700 rounded-lg relative group">
                         <div [ngClass]="{'h-[90%] flex items-center justify-center overflow-hidden rounded-lg m-2': data.isMovie,
                                         'w-[300px] h-[550px] flex flex-col overflow-hidden rounded-lg m-1': !data.isMovie}">
-                            <img [src]="data.images[0]" 
+                            <img [src]="data.images[currentImageIndex]" 
                                 [alt]="data.title1"
                                 class="min-w-full min-h-full object-cover rounded-lg"
                                 (error)="handleImageError($event)">
