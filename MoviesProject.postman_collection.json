@@ -1,0 +1,402 @@
+{
+	"info": {
+		"_postman_id": "63127097-bf5d-4a5a-bbbe-f3369b727e47",
+		"name": "MoviesProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39315370",
+		"_collection_link": "https://unitydevteam.postman.co/workspace/UnityDevTeam-Workspace~740a53cf-73e9-45bd-a5d3-af42371ce656/collection/39315370-63127097-bf5d-4a5a-bbbe-f3369b727e47?action=share&source=collection_link&creator=39315370"
+	},
+	"item": [
+		{
+			"name": "User related Endpoints",
+			"item": [
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"restaurantID\": \"Resto001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/getDishesFromRest",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"getDishesFromRest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"credential\": \"alonso@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"Alonso12\",\r\n    \"email\": \"alonso@gmail.com\",\r\n    \"password\": \"123\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movie related Endpoints",
+			"item": [
+				{
+					"name": "getMovies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/getMovies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"getMovies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addMovie",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"The Dark Knight 3\",\r\n    \"description\": \"When the menace known as the Joker emerges, Batman must accept one of the greatest psychological and physical tests.\",\r\n    \"director\": \"Christopher Nolan\",\r\n    \"cast\": [\r\n        {\r\n            \"name\": \"Christian\",\r\n            \"lastName\": \"Bale\",\r\n            \"birthDate\": \"1974-01-30T00:00:00.000Z\",\r\n            \"biography\": \"An English actor known for his intense method acting and versatility.\",\r\n            \"movies\": []\r\n        },\r\n        {\r\n            \"name\": \"Heath\",\r\n            \"lastName\": \"Ledger\",\r\n            \"birthDate\": \"1979-04-04T00:00:00.000Z\",\r\n            \"biography\": \"An Australian actor best known for his role as the Joker in 'The Dark Knight'.\",\r\n            \"movies\": []\r\n        }\r\n    ],\r\n    \"genre\": \"Action\",\r\n    \"calification\": 9.0,\r\n    \"releseDate\": \"2008-07-18T00:00:00.000Z\",\r\n    \"images\": [\r\n        \"darkknight1.jpg\",\r\n        \"darkknight2.jpg\"\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editMovie",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"The Dark Knight 2\",\r\n    \"description\": \"When the menace known as the Joker emerges, Batman must accept one of the greatest psychological and physical tests.\",\r\n    \"director\": \"Christopher Nolan\",\r\n    \"cast\": [\r\n        {\r\n            \"name\": \"Christian\",\r\n            \"lastName\": \"Bale\",\r\n            \"birthDate\": \"1974-01-30T00:00:00.000Z\",\r\n            \"biography\": \"An English actor known for his intense method acting and versatility.\",\r\n            \"movies\": []\r\n        },\r\n        {\r\n            \"name\": \"Heath\",\r\n            \"lastName\": \"Ledger\",\r\n            \"birthDate\": \"1979-04-04T00:00:00.000Z\",\r\n            \"biography\": \"An Australian actor best known for his role as the Joker in 'The Dark Knight'.\",\r\n            \"movies\": []\r\n        }\r\n    ],\r\n    \"genre\": \"Action\",\r\n    \"calification\": 9.0,\r\n    \"releseDate\": \"2008-07-18T00:00:00.000Z\",\r\n    \"images\": [\r\n        \"darkknight1.jpg\",\r\n        \"darkknight2.jpg\"\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/movies/67941e9f0695966c67900b8f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"movies",
+								"67941e9f0695966c67900b8f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMovie",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/movies/67942c460695966c67900ba3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"movies",
+								"67942c460695966c67900ba3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actor related Endpoints",
+			"item": [
+				{
+					"name": "getActors",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/getActors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"getActors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addActor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Scarlett\",\r\n  \"lastName\": \"Johansson\",\r\n  \"birthDate\": \"1984-11-22T00:00:00.000Z\",\r\n  \"biography\": \"American actress known for her role as Black Widow in the Marvel Cinematic Universe.\",\r\n  \"movies\": [\r\n    {\r\n      \"title\": \"Black Widow\",\r\n      \"description\": \"Natasha Romanoff confronts her past while dealing with a dangerous conspiracy.\",\r\n      \"director\": \"Cate Shortland\",\r\n      \"cast\": [\"Scarlett Johansson\", \"Florence Pugh\", \"David Harbour\"],\r\n      \"genre\": \"Action\",\r\n      \"calification\": 7.9,\r\n      \"releseDate\": \"2021-07-09T00:00:00.000Z\",\r\n      \"images\": [\"blackwidow-poster.jpg\", \"blackwidow-scene.jpg\"]\r\n    },\r\n    {\r\n      \"title\": \"Marriage Story\",\r\n      \"description\": \"A couple goes through a challenging divorce process.\",\r\n      \"director\": \"Noah Baumbach\",\r\n      \"cast\": [\"Scarlett Johansson\", \"Adam Driver\", \"Laura Dern\"],\r\n      \"genre\": \"Drama\",\r\n      \"calification\": 8.0,\r\n      \"releseDate\": \"2019-11-06T00:00:00.000Z\",\r\n      \"images\": [\"marriagestory-poster.jpg\", \"marriagestory-scene.jpg\"]\r\n    }\r\n  ],\r\n  \"images\": [\"scarlett-johansson-profile.jpg\", \"scarlett-johansson-redcarpet.jpg\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/actors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editActor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Scarletta\",\r\n  \"lastName\": \"Azul\",\r\n  \"birthDate\": \"1984-11-22T00:00:00.000Z\",\r\n  \"biography\": \"American actress known for her role as Black Widow in the Marvel Cinematic Universe.\",\r\n  \"movies\": [\r\n    {\r\n      \"title\": \"Black Widow\",\r\n      \"description\": \"Natasha Romanoff confronts her past while dealing with a dangerous conspiracy.\",\r\n      \"director\": \"Cate Shortland\",\r\n      \"cast\": [\"Scarlett Johansson\", \"Florence Pugh\", \"David Harbour\"],\r\n      \"genre\": \"Action\",\r\n      \"calification\": 7.9,\r\n      \"releseDate\": \"2021-07-09T00:00:00.000Z\",\r\n      \"images\": [\"blackwidow-poster.jpg\", \"blackwidow-scene.jpg\"]\r\n    },\r\n    {\r\n      \"title\": \"Marriage Story\",\r\n      \"description\": \"A couple goes through a challenging divorce process.\",\r\n      \"director\": \"Noah Baumbach\",\r\n      \"cast\": [\"Scarlett Johansson\", \"Adam Driver\", \"Laura Dern\"],\r\n      \"genre\": \"Drama\",\r\n      \"calification\": 8.0,\r\n      \"releseDate\": \"2019-11-06T00:00:00.000Z\",\r\n      \"images\": [\"marriagestory-poster.jpg\", \"marriagestory-scene.jpg\"]\r\n    }\r\n  ],\r\n  \"images\": [\"scarlett-johansson-profile.jpg\", \"scarlett-johansson-redcarpet.jpg\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/actors/6795f34e25e5f196f9a1e3a3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"actors",
+								"6795f34e25e5f196f9a1e3a3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteActor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/actor/6795f34e25e5f196f9a1e3a3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"actor",
+								"6795f34e25e5f196f9a1e3a3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getActorById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/actors/679f10c9fc95e0e2d9a9450e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"actors",
+								"679f10c9fc95e0e2d9a9450e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
