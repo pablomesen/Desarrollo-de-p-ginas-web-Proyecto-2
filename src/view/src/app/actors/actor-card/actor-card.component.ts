@@ -172,10 +172,12 @@ export class ActorCardComponent implements OnInit {
       movies: this.actor.movies
     };
 
+    console.log(formatedData.movies);
+
     this.dialog.open(MovieDetailsDialogComponent, {
       data: formatedData,
-      width: '40vw',
-      height: '61vh',
+      width: '55vw',
+      height: '71vh',
       maxWidth: '95vw',
       maxHeight: '95vh'
     });
