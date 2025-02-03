@@ -12,16 +12,25 @@ import { AuthService } from '../services/auth.service';
 export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   isLoginOrRegister = false;
+  isAdmin = false; 
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    
     this.authService.isAuthenticated$.subscribe(
       (isAuthenticated) => this.isLoggedIn = isAuthenticated
     );
+
+ 
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.isAdmin = user.role === 'admin';
+      } else {
+        this.isAdmin = false;
+      }
+    });
   }
 
   ngOnInit() {
